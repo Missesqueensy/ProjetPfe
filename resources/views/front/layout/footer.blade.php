@@ -26,22 +26,22 @@
                     <h4 class="text-white mb-3">Gallery</h4>
                     <div class="row g-2 pt-2">
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="{{asset('img/course-1.jpg')}}" alt="">
+                            <img class="img-fluid bg-light p-1" src="{{asset('assets/img/course-1.jpg')}}" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="{{asset('img/course-2.jpg')}}" alt="">
+                            <img class="img-fluid bg-light p-1" src="{{asset('assets/img/course-2.jpg')}}" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="{{asset('img/course-3.jpg')}}" alt="">
+                            <img class="img-fluid bg-light p-1" src="{{asset('assets/img/course-3.jpg')}}" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="{{url('img/course-2.jpg')}}" alt="">
+                            <img class="img-fluid bg-light p-1" src="{{asset('assets/img/course-2.jpg')}}" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="{{asset('img/course-3.jpg')}}" alt="">
+                            <img class="img-fluid bg-light p-1" src="{{asset('assets/img/course-3.jpg')}}" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="{{asset('img/course-1.jpg')}}" alt="">
+                            <img class="img-fluid bg-light p-1" src="{{asset('assets/img/course-1.jpg')}}" alt="">
                         </div>
                     </div>
                 </div>
