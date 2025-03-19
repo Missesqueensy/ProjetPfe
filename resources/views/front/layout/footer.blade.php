@@ -35,7 +35,7 @@
                             <img class="img-fluid bg-light p-1" src="{{asset('img/course-3.jpg')}}" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="{{asset('img/course-2.jpg')}}" alt="">
+                            <img class="img-fluid bg-light p-1" src="{{url('img/course-2.jpg')}}" alt="">
                         </div>
                         <div class="col-4">
                             <img class="img-fluid bg-light p-1" src="{{asset('img/course-3.jpg')}}" alt="">
