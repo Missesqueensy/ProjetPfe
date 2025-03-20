@@ -5,15 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class AuthController extends Controller
+class InscripController extends Controller
 {
     public function register(Request $request)
     {
         $request->validate([
             'nom' => 'required|string|max:255',
-            'prénom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'passwd' => 'required|min:6',
+            'password' => 'required|min:6',
             'tel' => 'required',
             'role' => 'required|in:etudiant,professeur,admin', // Validation du rôle
 
@@ -21,7 +21,7 @@ class AuthController extends Controller
 
         $user= User::create([
             'nom' => $request->nom,
-            'prénom' => $request->prenom,
+            'prenom' => $request->prenom,
             'email' => $request->email,
             'password' => Hash::make($request->passwd),
             'tel' => $request->tel,

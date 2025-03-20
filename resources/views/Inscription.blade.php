@@ -13,7 +13,7 @@
         <div class="container">
             <div class="box form-box">
                 <header>S'inscrire</header>
-                <form action="{{ route('register') }}" method="post">
+                <form action="{{ route('inscription') }}" method="post">
                  @csrf
                     <div class="field input">
                         <label for="Nom">Nom:</label>
@@ -46,7 +46,7 @@
                         <input type="submit" class="btn" name="submit" value="s'inscrire" required>
                     </div>
                     <div class="links">
-                        Vous avez déjà un compte? <a href="authentification.blade.php">Se Connecter
+                        Vous avez déjà un compte? <a href="{{route('login')}}">Se Connecter
                     </div>
                     @if(session('success'))
     <div class="alert alert-success">

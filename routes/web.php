@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\IndexController;
 use App\Http\Controllers\Etudiant\IndexEtudiantController;
 use App\Http\Controllers\Sp\IndexSpController;
 use App\Http\Controllers\Enseignant\IndexEnseignantController;
+use App\Http\Controllers\InscripController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,8 +34,15 @@ Route :: get('/etudiant',function(){
 Route:: get('/inscription',function(){
     return view('Inscription');
 })->name('inscription');
+Route::post('/inscription', [InscripController::class, 'register'])->name('register.submit');
 
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+
+
+Route:: get('/login', function(){
+    return view('Authentification');
+})->name('login');
+
+Route::post('/login', [AuthenController::class, 'login'])->name('login.submit');
 
 
 Route:: get('/accueil',function(){
