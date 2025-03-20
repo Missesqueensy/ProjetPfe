@@ -20,6 +20,7 @@ use App\Http\Controllers\Enseignant\IndexEnseignantController;
 Route::get('/', [IndexController::class, 'index'])->name('front.index');
 Route::get('/contact', [IndexController::class, 'contact'])->name('front.contact');
 
+//Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 //Route::get('/etudiant', [IndexEtudiantController::class, 'index']);

@@ -5,7 +5,6 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" contact="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!--<link rel="stylesheet" href="{{asset('css/Inscription.css')}}">-->
         <link rel="stylesheet" href="{{ asset('assets/css/Inscription.css') }}">
 
         <title>Register</title>
@@ -30,22 +29,39 @@
                     </div>
                     <div class="field input">
                         <label for="passwd">Mot de Passe:</label>
-                        <input type="password" name="password" id="password" required>
+                        <input type="password" name="passwd" id="password" required>
                     </div>
                     <div class="field input">
                         <label for="tel">Tel:</label>
                         <input type="text" name="tel" id="tel" required>
                     </div>
+                    <label>Rôle :</label>
+        <select name="role" required>
+            <option value="etudiant">Étudiant</option>
+            <option value="professeur">Professeur</option>
+            <option value="admin">Admin</option>
+        </select>
+
                     <div class="field ">
                         <input type="submit" class="btn" name="submit" value="s'inscrire" required>
                     </div>
                     <div class="links">
                         Vous avez déjà un compte? <a href="authentification.blade.php">Se Connecter
                     </div>
-                   <!-- @if(session('success'))
+                    @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
-    </div>-->
+    </div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 @endif
 
                 </form>

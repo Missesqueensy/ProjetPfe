@@ -11,22 +11,31 @@ class AuthController extends Controller
     {
         $request->validate([
             'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
+            'prénom' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+            'passwd' => 'required|min:6',
             'tel' => 'required',
+            'role' => 'required|in:etudiant,professeur,admin', // Validation du rôle
+
         ]);
 
-        User::create([
+        $user= User::create([
             'nom' => $request->nom,
-            'prenom' => $request->prenom,
+            'prénom' => $request->prenom,
             'email' => $request->email,
             'password' => Hash::make($request->passwd),
             'tel' => $request->tel,
-        ]);
+            'role' => $request->role,  // On ajoute le rôle ici
 
-        return redirect()->route('inscription')->with('success', 'Inscription réussie !');
+        ]);
+        if ($user && $user->id) {
+            return redirect()->route('home')->with('success', 'User created successfully');
+        } else {
+            return redirect()->back()->with('error', 'There was an issue creating the user.');
+        }
     }
+
+
 }
 
 

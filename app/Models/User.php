@@ -12,16 +12,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     protected $table= 'users';
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'nom', 'prenom', 'email', 'password', 'tel'
-    ];
     
+     protected $table= 'user';
+     // @var array<int, string>
+     
+    protected $fillable = [
+        'nom', 'prénom', 'email', 'password', 'tel'
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -41,4 +39,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // Désactiver la gestion automatique des timestamps
+    public $timestamps = false;
 }
+
