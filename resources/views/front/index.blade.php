@@ -151,7 +151,7 @@
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Nos Départements</h6>
-                <h1 class="mb-5">Courses Categories</h1>
+                <h1 class="mb-5">Cours par département</h1>
             </div>
             <div class="row g-3">
                 <div class="col-lg-7 col-md-6">
@@ -353,7 +353,7 @@
                             </div>
                         </div>
                         <div class="text-center p-4">
-                            <h5 class="mb-0">Pr.Elyaquoti</h5>
+                            <h5 class="mb-0">Pr.Elyoussfi</h5>
                             <small>Physique</small>
                         </div>
                     </div>
@@ -371,7 +371,7 @@
                             </div>
                         </div>
                         <div class="text-center p-4">
-                            <h5 class="mb-0">Pr.Zeggari</h5>
+                            <h5 class="mb-0">Pr.Zafati</h5>
                             <small>Biologie</small>
                         </div>
                     </div>
@@ -392,7 +392,7 @@
             <div class="owl-carousel testimonial-carousel position-relative">
                 <div class="testimonial-item text-center">
                     <img class="border rounded-circle p-2 mx-auto mb-3" src="{{asset('assets/img/testimonial-1.jpg')}}" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Amine Alami</h5>
+                    <h5 class="mb-0">Amina Alami</h5>
                     <p>étudiant</p>
                     <div class="testimonial-text bg-light text-center p-4">
                     <p class="mb-0">C'était la meilleure expériece d'apprentissage  de ma vie.Je n'ai raté aucun cours!</p>
@@ -400,7 +400,7 @@
                 </div>
                 <div class="testimonial-item text-center">
                     <img class="border rounded-circle p-2 mx-auto mb-3" src="{{asset('assets/img/testimonial-2.jpg')}}" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Asmae nanou</h5>
+                    <h5 class="mb-0">Asim nanou</h5>
                     <p>étudiant</p>
                     <div class="testimonial-text bg-light text-center p-4">
                     <p class="mb-0">La formation était bien structurée de même les professeurs étaient très compétannts . A ne pas rater</p>
@@ -408,7 +408,7 @@
                 </div>
                 <div class="testimonial-item text-center">
                     <img class="border rounded-circle p-2 mx-auto mb-3" src="{{asset('assets/img/testimonial-3.jpg')}}" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Ilham benani</h5>
+                    <h5 class="mb-0">wael benani</h5>
                     <p>étudiant</p>
                     <div class="testimonial-text bg-light text-center p-4">
                     <p class="mb-0">Team SkiNova est la meilleure dans ce domaine , Nous étions une famille):</p>
@@ -416,7 +416,7 @@
                 </div>
                 <div class="testimonial-item text-center">
                     <img class="border rounded-circle p-2 mx-auto mb-3" src="{{asset('assets/img/testimonial-4.jpg')}}" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">Adam melali</h5>
+                    <h5 class="mb-0">Amina melali</h5>
                     <p>étudiant</p>
                     <div class="testimonial-text bg-light text-center p-4">
                     <p class="mb-0">Ajouter de la pratique après toute théorique était un choix pertinent et bien intelligant! j'ai pu developper mes compétances facilement. </p>
