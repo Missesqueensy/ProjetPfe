@@ -1,3 +1,5 @@
+@extends('layouts.app')
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -148,11 +150,13 @@
             <header>
                 <div class="user_informations">
                 <img src="{{asset('assets/img/carousel-2.jpg')}}" alt="">
+                @if(Auth::check())
 
-                <h4>
-                    MARIA ALAMI
-                </h4>
-                <span>SMI</span>
+                <h4>{{Auth::user()->name}}</h4>
+                <span>{{Auth::user()->filliere}}</span>
+                @else
+                <h4>Utilisateur non connecté</h4>
+                @endif
                 <span>
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>

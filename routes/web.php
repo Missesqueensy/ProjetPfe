@@ -8,6 +8,8 @@ use App\Http\Controllers\Etudiant\IndexEtudiantController;
 use App\Http\Controllers\Sp\IndexSpController;
 use App\Http\Controllers\Enseignant\IndexEnseignantController;
 use App\Http\Controllers\InscripController;
+use App\Http\Controllers\DashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +34,7 @@ Route :: get('/etudiant',function(){
 });
 
 Route:: get('/inscription',function(){
-    return view('Inscription');
+    return view('inscription');
 })->name('inscription');
 Route::post('/inscription', [InscripController::class, 'register'])->name('register.submit');
 
@@ -48,6 +50,10 @@ Route::post('/login', [AuthenController::class, 'login'])->name('login.submit');
 Route:: get('/accueil',function(){
     return 'you re registred succefuly!';
 });
+
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+
 
 Route::get('/enseignant', [IndexEnseignantController::class, 'index']);
 

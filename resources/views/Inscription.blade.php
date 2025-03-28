@@ -13,7 +13,7 @@
         <div class="container">
             <div class="box form-box">
                 <header>S'inscrire</header>
-                <form action="{{ route('inscription') }}" method="post">
+                <form action="{{ route('register.submit') }}" method="post">
                  @csrf
                     <div class="field input">
                         <label for="Nom">Nom:</label>
@@ -39,7 +39,7 @@
         <select name="role" required>
             <option value="etudiant">Étudiant</option>
             <option value="professeur">Professeur</option>
-            <option value="admin">Admin</option>
+           <!-- <option value="admin">Admin</option>-->
         </select>
 
                     <div class="field ">
