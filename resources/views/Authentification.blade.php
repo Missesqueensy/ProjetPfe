@@ -30,4 +30,14 @@
                     <div class="links">
                         Vous n'avez pas de compte? <a href="{{route('inscription')}}">S'inscrire
                     </div>
+                    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+                </form>
+            </div>
+        </div>
+    </body>
+    </html>
              

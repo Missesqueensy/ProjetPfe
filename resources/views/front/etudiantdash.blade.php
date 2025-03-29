@@ -152,7 +152,7 @@
                 <img src="{{asset('assets/img/carousel-2.jpg')}}" alt="">
                 @if(Auth::check())
 
-                <h4>{{Auth::user()->name}}</h4>
+                <h4>Bienvenue,{{Auth::user()->name}}!</h4>
                 <span>{{Auth::user()->filliere}}</span>
                 @else
                 <h4>Utilisateur non connecté</h4>

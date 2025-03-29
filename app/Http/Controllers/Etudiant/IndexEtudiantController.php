@@ -7,10 +7,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
-    public function index()
+    /*public function index()
     {
         return view('dashboard', ['user' => Auth::user()]);
-    }
+    }*/
     public function __construct()
     {
         $this->middleware('auth'); // Empêche les utilisateurs non connectés d'accéder au dashboard

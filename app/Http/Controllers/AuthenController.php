@@ -5,27 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+class AuthenController extends Controller{
 
-
-
-class AuthenController extends Controller
+protected function authenticated(Request $request, $user)
 {
-    public function showLoginForm()
-    {
-        return view('auth.login');
+    if ($user->role == 'etudiant') {
+        return redirect()->route('dashboard');
     }
 
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            return redirect()->intended('/dashboard'); // Redirige après connexion réussie
-        }
-
-        return back()->withErrors(['email' => 'Email ou mot de passe incorrect.']);
-    }
+    return redirect()->route('admin.dashboard');
+}
 }
