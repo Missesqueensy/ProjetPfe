@@ -1,6 +1,6 @@
 <?php
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Etudiant;
+use App\Http\Controllers\Controller;
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;

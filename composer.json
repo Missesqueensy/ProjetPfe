@@ -5,10 +5,10 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-    "yajra/laravel-oci8": "^8.1"
-},
+    },
   "require": {
-    "yajra/laravel-oci8": "^10.0"
+"yajra/laravel-oci8": "^10.6"
+
 },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

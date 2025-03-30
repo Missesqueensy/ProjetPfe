@@ -4,6 +4,13 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
+// Ajoutez éventuellement des headers de sécurité supplémentaires
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: SAMEORIGIN');
+require __DIR__.'/../vendor/autoload.php';
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +57,11 @@ $kernel = $app->make(Kernel::class);
 
 $response = $kernel->handle(
     $request = Request::capture()
-)->send();
+);
+
+$response->send(); // ✅ Envoi séparé de la réponse
 
 $kernel->terminate($request, $response);
+
+
+?>
