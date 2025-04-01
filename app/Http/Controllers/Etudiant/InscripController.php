@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class InscripController extends Controller
 {
-    public function register(Request $request)
+    public function register(Request  $request)
     {
         // Validation des données de l'utilisateur
         $request->validate([
