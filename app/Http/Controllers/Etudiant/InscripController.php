@@ -1,45 +1,42 @@
 <?php
-namespace App\Http\Controllers\Etudiant;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller as ControllersController;
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Controllers\Controller;
+use Illuminate\Routing\Controller as RoutingController;
 
-class InscripController extends Controller
+class InscripController extends RoutingController
 {
-    public function register(Request  $request)
+    public function register(Request $request)
     {
-        // Validation des données de l'utilisateur
-        $request->validate([
-            'nom' => 'required|string|max:255',
+        // Validation des données
+        $validatedData = $request->validate([
             'prénom' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:etudiant,email',
-            'password' => 'required|string|min:8',
-            'tel' => 'required|string|max:15',
-            'role' => 'required|in:etudiant,professeur', // Assure que le rôle est bien sélectionné
+            'nom' => 'required|string|max:255',
+            'email' => 'required|email|unique:etudiant,email',
+            'password' => 'required|string|min:6|confirmed',
+            'tel' => 'required|string|max:20',
+            'CNI' => 'required|string|max:20',
         ]);
 
-        // Création de l'utilisateur
+        // Création de l'étudiant
         $etudiant = Etudiant::create([
-            'nom' => $request->nom,
-            'prénom' => $request->prénom,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'tel' => $request->tel,
-            'role' => $request->role,
+            'nom' => $validatedData['nom'],
+            'prénom' => $validatedData['prénom'],
+            'email' => $validatedData['email'],
+            'password' => Hash::make($validatedData['password']),
+            'password_confirmation' => 'required|string|min:6',
+            'tel' => $validatedData['tel'],
+            'CNI' => $validatedData['CNI'],
         ]);
 
-        // Authentifier l'utilisateur après la création
-        Auth::login($etudiant);
-        session()->flash('success', 'Inscription réussie! Veuillez vous connecter.');
+        // Retourne une réponse ou redirection après inscription réussie
+        //return redirect()->route('login')->with('success', 'Inscription réussie !');
+        return redirect()->route('dashboard.etudiant')->with('success', 'Inscription réussie, bienvenue !');
 
-
-        
-
-
-        // Si le rôle n'est pas défini, redirige vers la page par défaut (par exemple la page d'accueil)
-        return redirect()->route('login');
     }
 }
 ?>

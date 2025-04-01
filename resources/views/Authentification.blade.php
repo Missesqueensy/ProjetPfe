@@ -12,7 +12,7 @@
         <div class="container">
             <div class="box form-box">
                 <header>Se Connecter</header>
-                <form action="{{ route('login') }}" method="post">
+                <form action="{{ route('login.submit') }}" method="post">
                  @csrf
                     
                     <div class="field input">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="field input">
                         <label for="passwd">Mot de Passe:</label>
-                        <input type="password" name="passwd" id="password" required>
+                        <input type="password" name="password" id="password" required>
                     </div>
 
                     <div class="field ">

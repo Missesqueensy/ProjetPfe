@@ -13,13 +13,13 @@ return new class extends Migration
         {        if (!Schema::hasTable('etudiant')) {
 
             Schema::create('etudiant', function (Blueprint $table) {
-                $table->id();
+                $table->increments('id');
                 $table->string('nom');
                 $table->string('prénom');
                 $table->string('email')->unique();
                 $table->string('password');
                 $table->string('tel');
-                $table->enum('role', ['etudiant', 'professeur'])->default('etudiant');  // Ajout de la colonne "role"
+                $table->string('CNI');
                 $table->timestamps();
             });
         }
