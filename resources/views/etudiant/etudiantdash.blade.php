@@ -1,6 +1,6 @@
-@extends('layouts.app')
-@section('content')
-<!--<!DOCTYPE html>
+
+
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF_8">
@@ -34,7 +34,8 @@
 
             }
             aside .header img{
-                height: 32px;
+                height: 60px;
+                width:60px;
                 margin: 15px 0;
 
 
@@ -97,7 +98,7 @@
         <body>
         <aside>
             <div class="header">
-                <img src="{{asset('assets/img/logo.jpg')}}" alt="">
+                <img src="{{asset('assets/img/logosvg.svg')}}" alt="" >
             </div>
             <ul>
                 <li>
@@ -150,13 +151,15 @@
             <header>
                 <div class="user_informations">
                 <img src="{{asset('assets/img/carousel-2.jpg')}}" alt="">
-                @if(Auth::check())
-
-                <h4>Bienvenue,{{Auth::user()->prénom}},{{Auth::user()->nom}}!</h4>
-                <span>{{Auth::user()->filliere}}</span>
-                @else
+               
+                @if(isset($user))
+                <h4>Bienvenue, {{ $user->prénom }}, {{ $user->nom }} !</h4>
+                <span>{{ $user->filliere }}</span>
+            @else
                 <h4>Utilisateur non connecté</h4>
-                @endif
+            @endif
+            
+                
                 <span>
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
@@ -172,66 +175,4 @@
             </div>
         </body>
 
-</html>-->
-
-@extends('layouts.app')
-
-@section('content')
-<div style="display: flex;">
-    <!-- Sidebar -->
-    <aside>
-        <div class="header">
-            <img src="{{ asset('assets/img/logo.jpg') }}" alt="">
-        </div>
-        <ul>
-            <li>
-                <img width="40" height="40" src="https://img.icons8.com/nolan/64/dashboard.png" alt="dashboard"/>
-                <label>Dashboard</label>
-            </li>
-            <li>
-                <img width="40" height="40" src="https://img.icons8.com/nolan/64/guest-male.png" alt="guest-male"/>
-                <label class="active">Mon Profil</label>
-            </li>
-            <li>
-                <img width="40" height="40" src="https://img.icons8.com/nolan/64/e-learning.png" alt="e-learning"/>
-                <label>Cours inscrits</label>
-            </li>
-        </ul>
-        <hr>
-        <ul>
-            <li>
-                <i class="fa-solid fa-gear"></i>
-                <label>Paramètres</label>
-            </li>
-            <li>
-                <i class="fa-solid fa-sign-out-alt"></i>
-                <a href="#"
-                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    Déconnexion
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-            </li>
-        </ul>
-    </aside>
-
-    <!-- Contenu principal -->
-    <div class="layout-content">
-        <header>
-            <div class="user_informations">
-                <img src="{{ asset('assets/img/carousel-2.jpg') }}" alt="">
-                @if(Auth::check())
-                    <h4>Bienvenue, {{ Auth::user()->prénom }} {{ Auth::user()->nom }} !</h4>
-                    <span>{{ Auth::user()->filliere ?? 'Étudiant' }}</span>
-                @else
-                    <h4>Utilisateur non connecté</h4>
-                @endif
-            </div>
-        </header>
-        <main>
-            <p>Bienvenue sur votre espace étudiant.</p>
-        </main>
-    </div>
-</div>
-@endsection
+</html>

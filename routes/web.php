@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Etudiant\DashboardController;
 use App\Http\Controllers\InscripController as ControllersInscripController;
+use App\Http\Controllers\SupConxController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,12 @@ use App\Http\Controllers\InscripController as ControllersInscripController;
 */
 
 Route::get('/', [IndexController::class, 'index'])->name('front.index');
+Route::get('/', function () {
+    return view('front.index'); // Assurez-vous que la vue s'appelle bien "index.blade.php"
+})->name('front.index');
+Route::get('/loginprofile',function(){
+    return view('etudiant.etudiantdash');
+})->name('etudiant.etudiantdash');
 Route::get('/contact', [IndexController::class, 'contact'])->name('front.contact');
 
 //Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -59,16 +66,13 @@ Route::post('/inscription', function (Request  $request) {
         'tel' => $validatedData['tel'],
         'CNI' => $validatedData['CNI'], // Ajout du CNI
     ]);
-    //return view('etudiantdash');
-    //Auth::login($etudiant);
-    //return redirect()->route('dashboard.etudiant')->with('success', 'Inscription réussie, bienvenue !');
+    
+    Auth::login($etudiant);
 
-    // Retourner une réponse JSON avec un message de succès
-    /*return response()->json([
-        'message' => 'Étudiant inscrit avec succès.',
-        'etudiant' => $etudiant
-    ], 201);*/
-});
+    // Redirection vers Home après l'inscription réussie
+    return redirect()->route('front.index')->with('success', 'Inscription réussie ! Veuillez se connecter');
+})->name('register.submit');
+    
 
 
 Route:: get('/login', function(){

@@ -35,7 +35,7 @@ class InscripController extends RoutingController
 
         // Retourne une réponse ou redirection après inscription réussie
         //return redirect()->route('login')->with('success', 'Inscription réussie !');
-        return redirect()->route('dashboard.etudiant')->with('success', 'Inscription réussie, bienvenue !');
+        return redirect()->route('front.index')->with('success', 'Inscription réussie veuillez vous connecter à votre compte !');
 
     }
 }

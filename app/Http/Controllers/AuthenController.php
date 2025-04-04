@@ -54,13 +54,11 @@ class AuthenController extends Controller
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
             // Connexion réussie, rediriger l'utilisateur vers le dashboard étudiant
             //Auth::login($etudiant);
-          dd(Auth::user());
-            return redirect()->route('dashboard.etudiant');
+            //return redirect()->route('dashboard.etudiant');
+
         }
-        
-            // Rediriger l'utilisateur vers le dashboard étudiant
-            return redirect()->route('dashboard.etudiant');
-        
+                return redirect()->route('etudiant.etudiantdash')->with('welcome dear student !');
+
 
         // En cas d'échec, rediriger avec un message d'erreur
         return back()->withErrors([
