@@ -68,7 +68,7 @@
                         <div class="footer-menu">
                             <a href="">Home</a>
                             <a href="">Cookies</a>
-                            <a href="">Help</a>
+                            <a href="{{url('/AdminLogin')}}">Admin Login</a>
                             <a href="">FQAs</a>
                         </div>
                     </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminAuthenController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthenController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Etudiant\DashboardController;
 use App\Http\Controllers\InscripController as ControllersInscripController;
 use App\Http\Controllers\SupConxController;
+use Illuminate\Support\Facades\DB;
+
+Route::get('/courses', function () {
+    $courses = DB::table('cours')->get();
+    return view('etudiant.etudiantcours', ['cours' => $courses]);
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +44,39 @@ Route::get('/loginprofile',function(){
     return view('etudiant.etudiantdash');
 })->name('etudiant.etudiantdash');
 Route::get('/contact', [IndexController::class, 'contact'])->name('front.contact');
+//route pour les cours 
+Route::get('/cours',function(){
+    return view('etudiant.etudiantcours');
+})->name('etudiant.etudiantcours');
+//route pour les formulaires
+Route::get('/Mesformulaires',function(){
+    return view('etudiant.formulaires');
+})->name('etudiant.formulaires');
+//route cours favoris
+Route::get('/Favoris',function(){
+    return view('etudiant.favoris');
+})->name('etudiant.favoris');
+//route evaluations
+Route::get('/Mesévaluations',function(){
+    return view('etudiant.evaluations');
+})->name('etudiant.evaluations');
+//route vers les commentaires
+Route::get('/Mescommentaire',function(){
+    return view('etudiant.commentaires');
+})->name('etudiant.commentaires');
+//route de déconnexion
+Route::get('/Déconnexion',function(){
+    return view('front.index');
+})->name('front.indexDec');
+//routes des éléments navbar
+Route::get('/About',function(){
+    return view('front.navbar.about');
+})->name('front.navbar.about');
+//route admin login
+Route::get('/Adminlogin',function(){
+    return view('Admin.Adminlog');
+})->name('Admin.Adminlog');
+Route::post('/Adminlogin', [AdminAuthenController::class, 'Adminlogin'])->name('Adminlogin.submit');
 
 //Route::get('/home', [HomeController::class, 'index'])->name('home');
 
