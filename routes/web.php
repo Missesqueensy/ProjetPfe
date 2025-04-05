@@ -73,10 +73,10 @@ Route::get('/About',function(){
     return view('front.navbar.about');
 })->name('front.navbar.about');
 //route admin login
-Route::get('/Adminlogin',function(){
+Route::get('/Admin Login',function(){
     return view('Admin.Adminlog');
 })->name('Admin.Adminlog');
-Route::post('/Adminlogin', [AdminAuthenController::class, 'Adminlogin'])->name('Adminlogin.submit');
+Route::post('/Admin Login', [AdminAuthenController::class, 'LogAdmin'])->name('LogAdmin.submit');
 
 //Route::get('/home', [HomeController::class, 'index'])->name('home');
 

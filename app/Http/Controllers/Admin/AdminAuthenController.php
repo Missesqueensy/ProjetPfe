@@ -28,7 +28,7 @@ class AdminAuthenController extends Controller
             //return redirect()->route('etudiant.etudiantash');
 
         }
-            return redirect()->route('etudiant.etudiantdash')->with('succes','welcome dear student !');
+            return redirect()->route('Admin.Adminlog')->with('succes','welcome dear student !');
 
 
         // En cas d'échec, rediriger avec un message d'erreur

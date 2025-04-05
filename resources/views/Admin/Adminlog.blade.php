@@ -12,7 +12,7 @@
         <div class="container">
             <div class="box form-box">
                 <header>Se Connecter</header>
-                <form action="{{ route('Adminlogin.submit') }}" method="post">
+                <form action="" method="post">
                  @csrf
                     
                     <div class="field input">
