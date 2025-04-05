@@ -20,6 +20,11 @@ return [
             'provider' => 'etudiant',
             'hash' => false,
         ],
+        'admin' => [
+    'driver' => 'session',
+    'provider' => 'admins',
+],
+
     ],
 
     'providers' => [
@@ -27,6 +32,11 @@ return [
             'driver' => 'eloquent',
             'model' => Etudiant::class, // Utilisation correcte de l'importation
         ],
+        'admins' => [
+    'driver' => 'eloquent',
+    'model' => App\Models\Admin::class,
+],
+
     ],
 
     'passwords' => [
@@ -40,5 +50,12 @@ return [
 
     'password_timeout' => 10800,
 
+
+'admin' => [
+    'driver' => 'session',
+    'provider' => 'admin',
+],
+
 ];
+
 ?>

@@ -11,12 +11,12 @@ class DashboardController extends Controller
         public function etudiant()
 
         {
-            $etudiant = Auth::user(); // Ou une logique pour obtenir l'étudiant connecté
+            $etudiant = Auth::guard('web')->user(); // Ou une logique pour obtenir l'étudiant connecté
 
         return view('dashboard.etudiant', compact('etudiant'));
         }
         public function dashboard() {
-            return view('dashboard', ['user' => Auth::user()]);
+            return view('dashboard', ['user' => Auth::guard('web')->user()]);
         }
         
 

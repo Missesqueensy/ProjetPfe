@@ -160,9 +160,9 @@
                 <div class="user_informations">
                 <img src="{{asset('assets/img/carousel-2.jpg')}}" alt="">
                
-                @if(isset($user))
-                <h4>Bienvenue, {{ $user->prénom }}, {{ $user->nom }} !</h4>
-                <span>{{ $user->filliere }}</span>
+                @if(isset($etudiant))
+                <h4>Bienvenue, {{ $etudiant->prénom }} {{ $etudiant->nom }} !</h4>
+                <span>{{ $etudiant->CNI }}</span>
             @else
                 <h4>Utilisateur non connecté</h4>
             @endif

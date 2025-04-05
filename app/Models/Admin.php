@@ -14,23 +14,10 @@ class Admin extends Authenticatable // Étendre Authenticatable
     protected $table = 'admin';
 
     // Indiquer les champs qui peuvent être remplis en masse
-    protected $fillable = ['nom', 'prénom', 'email', 'password', 'tel'];
+    protected $fillable = ['nom', 'prenom', 'email', 'password', 'tel'];
 
     // Hachage du mot de passe lors de la création ou mise à jour
-    public static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($admin) {
-            if ($admin->password) {
-                $admin->password = Hash::make($admin->password); // Hachage du mot de passe lors de la création
-            }
-        });
-
-        static::updating(function ($admin) {
-            if ($admin->password) {
-                $admin->password = Hash::make($admin->password); // Hachage du mot de passe lors de la mise à jour
-            }
-        });
-    }
+    protected $hidden = [
+        'password',
+    ];
 }
