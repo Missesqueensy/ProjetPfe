@@ -34,13 +34,14 @@ use Illuminate\Support\Facades\Hash;
         ]);
     }
 }*/
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
+use App\Http\Controllers\Controller;
 
-class AdminAuthenController extends Controller
+class AdminAuthenController extends \App\Http\Controllers\Controller
 {
     // Fonction de gestion de la connexion de l'admin
     public function login(Request $request)
@@ -54,7 +55,7 @@ class AdminAuthenController extends Controller
         // 🔐 On utilise le guard 'admin' pour se connecter
         if (Auth::guard('admin')->attempt($credentials)) {
             // Si les identifiants sont bons, rediriger vers le dashboard admin
-            return redirect()->route('admin.dashboard')->with('success', 'Bienvenue cher admin !');
+            return redirect()->route('Admin.Admindash')->with('success', 'Bienvenue cher admin !');
         }
 
         // En cas d'échec, rediriger avec un message d'erreur
@@ -67,6 +68,6 @@ class AdminAuthenController extends Controller
     public function logout()
     {
         Auth::guard('admin')->logout();
-        return redirect()->route('admin.login')->with('success', 'Déconnexion réussie.');
+        return redirect()->route('Adminlog')->with('success', 'Déconnexion réussie.');
     }
 }

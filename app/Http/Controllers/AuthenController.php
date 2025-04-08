@@ -57,6 +57,7 @@ class AuthenController extends Controller
             //return redirect()->route('etudiant.etudiantash');
 
         }
+
             return redirect()->route('etudiant.etudiantdash')->with('succes','welcome dear student !');
 
 

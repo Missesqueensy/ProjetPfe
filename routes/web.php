@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdminAuthenController;
+use App\Http\Controllers\Admin\AdminAuthenController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthenController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +18,7 @@ use App\Http\Controllers\Etudiant\DashboardController;
 use App\Http\Controllers\InscripController as ControllersInscripController;
 use App\Http\Controllers\SupConxController;
 use Illuminate\Support\Facades\DB;
+
 
 Route::get('/courses', function () {
     $courses = DB::table('cours')->get();
@@ -76,7 +77,11 @@ Route::get('/About',function(){
 Route::get('/Admin Login',function(){
     return view('Admin.Adminlog');
 })->name('Admin.Adminlog');
-Route::post('/Admin Login', [AdminAuthenController::class, 'LogAdmin'])->name('LogAdmin.submit');
+Route::post('/Admin Login', [AdminAuthenController::class, 'login'])->name('LogAdmin.submit');
+//route admin dashboard
+Route::get('/Admin dashboard',function(){
+    return view('Admin.Admindash');
+})->name('Admin.Admindash');
 
 //Route::get('/home', [HomeController::class, 'index'])->name('home');
 

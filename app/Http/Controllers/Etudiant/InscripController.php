@@ -31,6 +31,7 @@ class InscripController extends RoutingController
             'password_confirmation' => 'required|string|min:6',
             'tel' => $validatedData['tel'],
             'CNI' => $validatedData['CNI'],
+
         ]);
 
         // Retourne une réponse ou redirection après inscription réussie
