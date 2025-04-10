@@ -1,3 +1,1 @@
-<?php
-echo ' favoritos elements';
-?>
+@extends('etudiant.etudiantdash');

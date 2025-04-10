@@ -10,16 +10,15 @@ class CreateCoursTable extends Migration
     public function up()
     {
         Schema::create('cours', function (Blueprint $table) {
-            $table->id('id_cours'); // Définition de la colonne id_cours (clé primaire)
-            $table->string('titre'); // Définition de la colonne titre
-            $table->text('description'); // Définition de la colonne description
-            $table->string('image'); // Définition de la colonne image
-            $table->unsignedBigInteger('id_enseignant'); // Définition de la colonne id_enseignant (clé étrangère)
+            $table->id('id_cours'); 
+            $table->string('titre'); 
+            $table->text('description'); 
+            $table->string('image'); 
+            $table->unsignedBigInteger('id_enseignant'); 
 
-            // Ajout de la contrainte de clé étrangère
-            $table->foreign('id_enseignant')->references('id')->on('enseignant')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_enseignant')->references('id_enseignant')->on('enseignant')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->timestamps(); // Si vous souhaitez ajouter created_at et updated_at
+            $table->timestamps(); 
         });
     }
 

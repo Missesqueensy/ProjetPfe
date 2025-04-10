@@ -197,3 +197,37 @@ color: seagreen;
     color: var(--text-color);
 }
 
+.course-card {
+   transition: all 0.3s ease;
+   height: 100%;
+}
+.course-card:hover {
+   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+   transform: translateY(-2px);
+}
+.course-title {
+   font-size: 1.2rem;
+   font-weight: 600;
+   margin-bottom: 0.5rem;
+}
+
+.course-description {
+   font-size: 0.9rem;
+   margin-bottom: 1rem;
+}
+
+.action-buttons .btn {
+   margin-left: 0.5rem;
+}
+@media (max-width: 768px) {
+   .action-buttons {
+       display: flex;
+       flex-direction: column;
+       gap: 0.5rem;
+   }
+   
+   .action-buttons .btn {
+       margin-left: 0;
+       width: 100%;
+   }
+}

@@ -5,19 +5,23 @@ use App\Models\Etudiant; // L'importation doit être ici, avant les tableaux de 
 return [
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'etudiant',
         'passwords' => 'etudiant',
     ],
 
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'etudiant',
+            'provider' => 'users',//hna etudiant
+        ],
+        'etudiant' => [ // Configuration du guard 'etudiant'
+            'driver' => 'session',
+            'provider' => 'etudiants', // Le provider que tu as défini plus bas
         ],
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'etudiant',
+            'provider' => 'etudiants',//ha
             'hash' => false,
         ],
         'admin' => [
@@ -28,7 +32,7 @@ return [
     ],
 
     'providers' => [
-        'etudiant' => [
+        'etudiants' => [
             'driver' => 'eloquent',
             'model' => Etudiant::class, // Utilisation correcte de l'importation
         ],
@@ -41,7 +45,7 @@ return [
 
     'passwords' => [
         'etudiant' => [
-            'provider' => 'etudiant',
+             'provider' => 'etudiants',//hna etudiant
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,

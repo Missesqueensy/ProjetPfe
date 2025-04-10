@@ -38,49 +38,49 @@
              </div>
              <ul>
                 <li>
-                    <a href="">
+                    <a href="{{url('AdminCours')}}">
                         <span class="la la-book"></span>
                         Les Cours
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{url('/AdminAnalyses')}}">
                     <span class="las la-chart-pie"></span>
                       Analyses
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{url('/AdminCalendrier')}}">
                         <span class="las la-calendar"></span>
                         calendrier
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{url('/AdminForums')}}">
                     <span class="la la-wpforms"></span>
                       Forums
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{url('/AdminInscription')}}">
                         <span class="la la-check-circle"></span>
                         Les inscriptions
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{url('/AdminProfesseurs')}}">
                         <span class="la la-chalkboard-teacher"></span>
                         Les professeurs
                        </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{url('/AdminFormations')}}">
                     <span class="la la-chalkboard"></span>
                       les Formations 
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="{{url('/AdminMails')}}">
                     <span class="las la-envelope"></span>
                       boîte e-mails
                     </a>

@@ -1,3 +1,1 @@
-<?php
-echo 'les evaluations';
-?>
+@extends('etudiant.etudiantdash');

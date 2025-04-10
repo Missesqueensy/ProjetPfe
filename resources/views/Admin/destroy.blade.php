@@ -92,53 +92,29 @@
 </div>
 <div class="main-content">
         <header>
-             <div class="menu-toggle">
-                <label for="">
-                    <span class="las la-bars"></span>
-                        </label>
-             </div>
-        <div class="header-icons">
-                <span class="las la-search"></span>
-                <span class="las la-bookmark"></span>
-                <span class="las la-sms"></span>
-            </div>
+            <h1>Admin Dashboard</h1>
         </header>
-        <main>
-            <div class="page-header">
-               <div>
-                <h1>Tous les Cours</h1>
-                <small style="color:#8da2fb">Cours ajoutés</small>
-               </div>
-            </div>
-    <div class="container">
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
 
-        <h3>All Courses</h3>
-        <a href="{{ route('Admin.courses.create') }}" class="btn btn-primary">Create Course</a>
-        <ul>
-            @foreach($courses as $cours)
-            @if($cours->id)  <!-- Vérifie si l'ID existe -->
-                <li>
-                <strong>{{ $cours->titre }}</strong><br>
-                <small>{{ $cours->description }}</small><br>
-                    
-                    <a href="{{ route('Admin.courses.edit', $cours->id) }}">Modifier</a>
-                    <form action="{{ route('admin.courses.destroy', $cours->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
-                    </form>
-                </li>
-                @else
-        <p>Course ID is missing!</p>  <!-- Pour voir si un cours sans ID s'affiche -->
-    @endif
-            @endforeach
-        </ul>
+        <div class="container">
+            <h1>Tous les Cours</h1>
+            <ul>
+                @foreach($courses as $cours)
+                    <li>
+                        <strong>{{ $cours->titre }}</strong><br>
+                        <small>{{ $cours->description }}</small><br>
+                        <a href="{{ route('Admin.courses.show', $cours->id_cours) }}">Voir</a>
+
+                        <!-- Formulaire de suppression -->
+                        <form action="{{ route('Admin.courses.destroy', $cours->id_cours) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
     </div>
+
 </body>
 </html>
-        
-    
-    

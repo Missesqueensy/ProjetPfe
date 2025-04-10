@@ -1,3 +1,1 @@
-<?php
-echo 'ici on doit ajouter les formulaire docus etudinat';
-?>
+@extends('etudiant.etudiantdash');

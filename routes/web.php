@@ -18,6 +18,8 @@ use App\Http\Controllers\Etudiant\DashboardController;
 use App\Http\Controllers\InscripController as ControllersInscripController;
 use App\Http\Controllers\SupConxController;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\CoursController;
+
 
 
 Route::get('/courses', function () {
@@ -82,10 +84,56 @@ Route::post('/Admin Login', [AdminAuthenController::class, 'login'])->name('LogA
 Route::get('/Admin dashboard',function(){
     return view('Admin.Admindash');
 })->name('Admin.Admindash');
+//route admin cours
+/*Route::get('/AdminCours',function(){
+    return view ('Admin.courses');
+})->name('Admin.courses');*/
 
-//Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/AdminCours', [CoursController::class, 'index'])->name('Admin.courses');
+Route::get('/Admin/courses/{id}/edit', [CoursController::class, 'edit'])->name('Admin.courses.edit');
+//suppression du cours
+Route::delete('/admin/courses/{id}', [CoursController::class, 'destroy'])->name('admin.courses.destroy');
+// afficher tous les cours
+Route::get('/admin/courses', [CoursController::class, 'index'])->name('Admin.courses.index');
+//creation cours
+Route::get('/admin/courses/create', [CoursController::class, 'create'])->name('Admin.courses.create');
+
+// Route pour stocker le cours après soumission du formulaire
+Route::post('/admin/courses', [CoursController::class, 'store'])->name('Admin.courses.store');
+//affichage cours
+Route::get('/admin/courses/{id_cours}', [CoursController::class, 'show'])->name('Admin.courses.show');
+//modification du cours 
+Route::put('/admin/courses/{id}', [CoursController::class, 'update'])->name('Admin.courses.update');
 
 
+//route admin analyses
+Route::get('/AdminAnalyses',function(){
+    return view ('Admin.Analyses');
+})->name('Admin.Analyses');
+//route admin vers le calendrier
+Route::get('/AdminCalendrier',function(){
+    return view('Admin.Calendrier');
+})->name('Admin.Calendrier');
+//route admin vers formulaires
+Route::get('/AdminForums',function(){
+    return view('Admin.Forums');
+})->name('Admin.Forums');
+//route admin vers les inscriptions
+Route::get('/AdminInscription',function(){
+    return view('Admin.Lesinscriptions');
+})->name('Admin.Lesinscriptions');
+//route admin vers les professeurs
+Route::get('/AdminProfesseurs',function(){
+    return view('Admin.Lesprofesseurs');
+})->name('Admin.Lesprofesseurs');
+//route admin vers les formations
+Route::get('/AdminFormations',function(){
+    return view('Admin.Lesformations');
+})->name('Admin.Lesformations');
+//route admin vers boite mail
+Route::get('/AdminMails',function(){
+    return view('Admin.emails');
+})->name('Admin.emails');
 //inscription getting
 Route:: get('/inscription',function(){
     return view('inscription');
@@ -163,3 +211,5 @@ Route::get('/test-log', function () {
     Log::error('Ceci est un test de log Laravel');
     return 'Log ajouté';
 });
+
+
