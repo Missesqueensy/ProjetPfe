@@ -5,11 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
     
-    <!--<link rel="stylesheet" href="Admindash.css">-->
     <link rel="stylesheet" href="{{ asset('assets/css/admindash.css') }}">
-
-    <title>Admin Dashboard Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Détails de l'Enseignant</title>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <style>
+        .teacher-details {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .teacher-image {
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #eee;
+        }
+    </style>
 </head>
 <body> 
 <div class="dashboard-container">
@@ -45,10 +61,12 @@
                 </li>
                 <li>
                 <a href="{{url('adminAnalyses')}}">
+
                     <span class="las la-chart-pie"></span>
                       Réclamations
                     </a>
                 </li>
+                
                 <li>
                     <a href="{{url('/AdminForums')}}">
                     <span class="la la-wpforms"></span>
@@ -80,7 +98,6 @@
                     </a>
                 </li>
                 <li>
-                <li>
     <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
         @csrf
         <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
@@ -95,53 +112,48 @@
 </div>
 <div class="main-content">
         <header>
-             <div class="menu-toggle">
-                <label for="">
-                    <span class="las la-bars"></span>
-                        </label>
-             </div>
-        <div class="header-icons">
-                <span class="las la-search"></span>
-                <span class="las la-bookmark"></span>
-                <span class="las la-sms"></span>
-            </div>
+            <h1>Admin Dashboard</h1>
         </header>
-        <main>
-            <div class="page-header">
-               <div>
-                <h1>Tous les Cours</h1>
-                <small style="color:#8da2fb">Cours ajoutés</small>
-               </div>
-            </div>
-    <div class="container">
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
 
-        <h3>All Courses</h3>
-        <a href="{{ route('Admin.courses.create') }}" class="btn btn-primary">Create Course</a>
-        <ul>
-            @foreach($courses as $cours)
-            @if($cours->id)  <!-- Vérifie si l'ID existe -->
-                <li>
-                <strong>{{ $cours->titre }}</strong><br>
-                <small>{{ $cours->description }}</small><br>
-                    
-                    <a href="{{ route('Admin.courses.edit', $cours->id) }}">Modifier</a>
-                    <form action="{{ route('admin.courses.destroy', $cours->id) }}" method="POST" style="display:inline;">
+
+    <div class="container">
+        <div class="teacher-details">
+            <h1 class="mb-4"><i class="las la-chalkboard-teacher"></i> Détails de l'Enseignant</h1>
+            
+            <div class="mb-4">
+                <h3>Informations personnelles</h3>
+                <p><strong>Nom:</strong> {{ $enseignant->nom }}</p>
+                <p><strong>Prénom:</strong> {{ $enseignant->prenom }}</p>
+                <p><strong>Email:</strong> {{ $enseignant->email }}</p>
+            </div>
+            
+            <div class="mb-4">
+                <h3>Informations professionnelles</h3>
+                <p><strong>Département:</strong> {{ $enseignant->departement }}</p>
+                <p><strong>Spécialité:</strong> {{ $enseignant->specialite }}</p>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{{ route('Admin.professeurs.indexprofesseur') }}" class="btn btn-outline-primary">
+                    <i class="las la-arrow-left"></i> Retour à la liste
+                </a>
+                <div>
+                    <!--<a href="{{ route('Admin.professeurs.editprofesseur', $enseignant->id_enseignant) }}" class="btn btn-outline-warning me-2">
+                        <i class="las la-edit"></i> Modifier
+                    </a>-->
+                    <form action="{{ route('Admin.professeurs.destroyprofesseur', $enseignant->id_enseignant) }}" method="POST" style="display: inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet enseignant?')">
+                            <i class="las la-trash"></i> Supprimer
+                        </button>
                     </form>
-                </li>
-                @else
-        <p>Course ID is missing!</p>  <!-- Pour voir si un cours sans ID s'affiche -->
-    @endif
-            @endforeach
-        </ul>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-        
-    
-    

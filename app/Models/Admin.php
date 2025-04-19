@@ -20,4 +20,9 @@ class Admin extends Authenticatable // Étendre Authenticatable
     protected $hidden = [
         'password',
     ];
+    public function reclamationsTraitees()
+{
+    return $this->hasMany(Reclamation::class);
+}
+
 }

@@ -63,58 +63,11 @@
                         Les Cours
                     </a>
                 </li>
-                <li>
-                <a href="{{url('adminAnalyses')}}">
-
-                    <span class="las la-chart-pie"></span>
-                      Réclamations
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="{{url('/AdminForums')}}">
-                    <span class="la la-wpforms"></span>
-                      Forums
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminInscription')}}">
-                        <span class="la la-check-circle"></span>
-                        Les inscriptions
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminProfesseurs')}}">
-                        <span class="la la-chalkboard-teacher"></span>
-                        Les professeurs
-                       </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminFormations')}}">
-                    <span class="la la-chalkboard"></span>
-                      les Formations 
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminMails')}}">
-                    <span class="las la-envelope"></span>
-                      boîte e-mails
-                    </a>
-                </li>
-                <li>
-    <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
-        @csrf
-        <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
-            <span class="las la-sign-out-alt"></span>
-            Déconnexion
-        </button>
-    </form>
-</li>
+                <!-- Autres éléments du menu... -->
              </ul>
-            </div>
+        </div>
     </div>
 
-</div>
     <div class="main-content">
         <header>
             <div class="menu-toggle">

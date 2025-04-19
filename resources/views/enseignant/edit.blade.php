@@ -3,124 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
-    
-    <link rel="stylesheet" href="{{ asset('assets/css/admindash.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Admin Dashboard Panel</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/enseignantdash.css') }}">
+    <title>Dashboard Enseignant - Mes Cours</title>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    <style>
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-        .form-header {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
-        }
-        .file-upload {
-            border: 2px dashed #ddd;
-            padding: 2rem;
-            text-align: center;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-        }
-        .file-upload:hover {
-            border-color: #0d6efd;
-        }
-        .preview-image {
-            max-width: 200px;
-            max-height: 200px;
-            margin-top: 1rem;
-            border-radius: 4px;
-        }
-    </style>
 </head>
 <body> 
 <div class="dashboard-container">
-    <!-- Sidebar (identique à votre version originale) -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <div class="brand-flex">
-                <img src="{{asset('assets/img/logosvg.svg')}}" width="50px" alt="">
-               <div class="brand-icons">
-                <span class="las la-beli"> </span>
-                <span class="las la-user-circle"></span>
-               </div>
+                <img src="{{ asset('assets/img/logosvg.svg') }}" width="50px" alt="Logo">
+                <div class="brand-icons">
+                    <span class="las la-bell"></span>
+                    <span class="las la-user-circle"></span>
+                </div>
             </div>
         </div>
         <div class="sidebar-user">
-            <img src="{{asset('assets/img/carousel-1.jpg')}}" height=50 width=50 alt="">
+            <img src="{{ asset('assets/img/user.jpeg') }}" height="50" width="50" alt="Photo de profil">
             <div>
-                <h3>AHLAME LAD</h3>
-                <span>Ladahlame@admin.com</span>
+                <h3>Amal Assim</h3>
+                <span>Amalassim@gmail.com</span>
             </div>
         </div>
         <div class="sidebar-menu">
-             <div class="menu-head">
-                <span>Dashboard</span>
-             </div>
-             <ul>
-                <li>
-                    <a href="{{url('AdminCours')}}">
-                        <span class="la la-book"></span>
-                        Les Cours
-                    </a>
-                </li>
-                <li>
-                <a href="{{url('adminAnalyses')}}">
-
-                    <span class="las la-chart-pie"></span>
-                      Réclamations
-                    </a>
-                </li>
-               
-                <li>
-                    <a href="{{url('/AdminForums')}}">
-                    <span class="la la-wpforms"></span>
-                      Forums
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminInscription')}}">
-                        <span class="la la-check-circle"></span>
-                        Les inscriptions
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminProfesseurs')}}">
-                        <span class="la la-chalkboard-teacher"></span>
-                        Les professeurs
-                       </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminFormations')}}">
-                    <span class="la la-chalkboard"></span>
-                      Les Formations 
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminMails')}}">
-                    <span class="las la-envelope"></span>
-                      Boîte e-mails
-                    </a>
-                </li>
-                <li>
-    <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
-        @csrf
-        <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
-            <span class="las la-sign-out-alt"></span>
-            Déconnexion
-        </button>
-    </form>
-</li>
-             </ul>
+            <div class="menu-head">
+                <a href="{{ url('/enseignant/dashboard') }}">Mon Profil</a>
             </div>
+            <ul>
+                <li class="active">
+                    <a href="{{ url('/enseignant/cours') }}">
+                        <span class="la la-book"></span>
+                        Mes Cours
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="la la-wpforms"></span>
+                        Evaluations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="la la-check-circle"></span>
+                        Résultats étudiants
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="la la-chalkboard-teacher"></span>
+                        Réclamations
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="las la-envelope"></span>
+                        Boîte e-mails
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="main-content">
@@ -138,7 +82,7 @@
                     <h1 class="h3 mb-0"><i class="las la-edit"></i> Modifier le cours</h1>
                 </div>
 
-                <form action="{{ route('Admin.courses.update', $cours->id_cours) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('Enseignant.courses.update', $cours->id_cours) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -172,7 +116,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mt-5">
-                        <a href="{{ route('Admin.courses.index') }}" class="btn btn-outline-secondary">
+                        <a href="{{ route('Enseignant.courses.index') }}" class="btn btn-outline-secondary">
                             <i class="las la-arrow-left"></i> Retour
                         </a>
                         <button type="submit" class="btn btn-primary px-4">

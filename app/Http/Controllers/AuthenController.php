@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthenController extends Controller
 {
     // Fonction de gestion de la connexion
+    
     public function login(Request $request)
     {
         // Validation des données d'entrée
@@ -46,14 +47,10 @@ class AuthenController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Vérification si l'utilisateur existe avec l'email fourni
         $etudiant = Etudiant::where('email', $credentials['email'])->first();
 
-        // Vérifier si l'étudiant existe et si le mot de passe est correct
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
-            // Connexion réussie, rediriger l'utilisateur vers le dashboard étudiant
-           // Auth::login($etudiant);
-            //return redirect()->route('etudiant.etudiantash');
+            
 
         }
 
@@ -74,35 +71,6 @@ class AuthenController extends Controller
     // Autres redirections selon le rôle
 }
 }
-/*class AuthenController extends Controller
-{
-public function login(Request $request)
-{
-    // Validation des données d'entrée
-    $credentials = $request->validate([
-        'email' => 'required|email',
-        'password' => 'required|string',
-    ]);
 
-    // Vérification de l'authentification
-    if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
-        // Connexion réussie, rediriger l'utilisateur vers le dashboard étudiant
-        return redirect()->route('etudiant.etudiantdash');  // Assurez-vous que la route existe
-    }
 
-    // Si l'authentification échoue, rediriger avec un message d'erreur
-    return back()->withErrors([
-        'email' => 'Les informations de connexion sont incorrectes.',
-    ]);
-}
-public function authenticated(Request $request, $user)
-{
-    if ($user instanceof Etudiant) {
-        return redirect()->route('etudiant.etudiatdash');  // Assurez-vous que la route existe
-    }
-
-    // Autres redirections selon le rôle
-}
-
-}*/
 

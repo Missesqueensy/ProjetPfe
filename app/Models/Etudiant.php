@@ -12,9 +12,13 @@ class Etudiant extends Authenticatable // Étendre Authenticatable
 
     // Indiquer explicitement la table associée si nécessaire
     protected $table = 'etudiant';
+    protected $primaryKey = 'id_etudiant'; // <-- AJOUT CRITIQUE
+    public $incrementing = true;           // <-- Si l'ID est auto-incrémenté
+    protected $keyType = 'int';            // <-- Type de clé (int par défaut)
+
 
     // Indiquer les champs qui peuvent être remplis en masse
-    protected $fillable = ['nom', 'prénom', 'email', 'password', 'tel', 'CNI'];
+    protected $fillable = ['id_etudiant','nom', 'prénom', 'email', 'password', 'tel', 'CNI'];
 
     // Hachage du mot de passe lors de la création ou mise à jour
     public static function boot()
@@ -33,4 +37,21 @@ class Etudiant extends Authenticatable // Étendre Authenticatable
             }
         });
     }
+    public function formulaires()
+{
+    return $this->hasMany(Formulaire::class, 'id_etudiant','id_etudiant');
+}
+public function reclamations()
+{
+    return $this->morphMany(Reclamation::class, 'expediteur');
+}
+public function reclamationsEnvoyees()
+{
+    return $this->morphMany(Reclamation::class, 'expediteur');
+}
+
+public function reclamationsRecues()
+{
+    return $this->morphMany(Reclamation::class, 'destinataire');
+}
 }

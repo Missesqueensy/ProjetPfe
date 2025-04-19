@@ -3,18 +3,72 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
-class Enseignant extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+/*class Enseignant extends Model
 {
-    protected $table = 'enseignant'; // Nom de la table
-    protected $primaryKey = 'id_enseignant'; // Clé primaire
-    public $timestamps = false; // Si vous n'avez pas de colonnes created_at et updated_at
+    use Notifiable;
+    protected $table = 'enseignant'; 
+    protected $primaryKey = 'id_enseignant'; 
+    public $timestamps = false; 
     public $incrementing = true;
-    // Si vous utilisez les colonnes créées manuellement
     protected $fillable = ['id_enseignant', 'specialite', 'departement','nom','prenom','email','password'];
-    // Relation avec le modèle Cours (un enseignant peut avoir plusieurs cours)
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
     public function cours()
     {
         return $this->hasMany(Cours::class, 'id_enseignant');
     }
+}*/
+
+namespace App\Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class Enseignant extends Authenticatable
+{
+    use Notifiable;
+
+    protected $table = 'enseignant'; 
+    protected $primaryKey = 'id_enseignant';
+    public $timestamps = false;
+    public $incrementing = true;
+
+    protected $fillable = [
+        'nom',
+        'prenom',
+        'email',
+        'password',
+        'specialite',
+        'departement'
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    public function cours()
+    {
+        return $this->hasMany(Cours::class, 'id_enseignant');
+    }
+    public function reclamations()
+{
+    return $this->morphMany(Reclamation::class, 'expediteur');
+}
+public function reclamationsEnvoyees()
+{
+    return $this->morphMany(Reclamation::class, 'expediteur');
+}
+
+public function reclamationsRecues()
+{
+    return $this->morphMany(Reclamation::class, 'destinataire');
+}
+public function getAuthPassword()
+{
+    return $this->password;
+}
 }

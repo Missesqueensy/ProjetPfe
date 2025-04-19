@@ -69,6 +69,8 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         // Autres middlewares...
         'role' => \App\Http\Middleware\RoleMiddleware::class,
+        'enseignant.redirect' => \App\Http\Middleware\RedirectIfEnseignant::class,
+
     ];
 
    

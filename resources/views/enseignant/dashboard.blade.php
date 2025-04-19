@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
     
     <!--<link rel="stylesheet" href="Admindash.css">-->
-    <link rel="stylesheet" href="{{ asset('assets/css/admindash.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/enseignantdash.css') }}">
 
-    <title>Admin Dashboard Panel</title>
+    <title>dashboard enseignant</title>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 </head>
 <body> 
@@ -26,61 +26,44 @@
             </div>
         </div>
         <div class="sidebar-user">
-            <img src="{{asset('assets/img/carousel-1.jpg')}}" height=50 width=50 alt="">
+            <img src="{{asset('assets/img/user.jpeg')}}" height=50 width=50 alt="">
             <div>
-                <h3>AHLAME LAD</h3>
-                <span>Ladahlame@admin.com</span>
+                <h3>amal assim</h3>
+                <span>aalassim@gmail.com.com</span>
             </div>
         </div>
         <div class="sidebar-menu">
              <div class="menu-head">
-                <span>Dashboard</span>
+                <a href="{{url('/enseignant/dashboard')}}">Mon Profil</a>
+                <!--<span>Mon Profil</span>-->
              </div>
              <ul>
                 <li>
-                    <a href="{{url('AdminCours')}}">
+                    <a href="{{url('/enseignant/cours')}}">
                         <span class="la la-book"></span>
-                        Les Cours
+                        Mes Cours
                     </a>
                 </li>
                 <li>
-                    <a href="{{url('/AdminAnalyses')}}">
-                    <span class="las la-chart-pie"></span>
-                      Analyses
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminCalendrier')}}">
-                        <span class="las la-calendar"></span>
-                        calendrier
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminForums')}}">
+                    <a href="{{url('/enseignant/evaluations')}}">
                     <span class="la la-wpforms"></span>
-                      Forums
+                      Evaluations
                     </a>
                 </li>
                 <li>
-                    <a href="{{url('/AdminInscription')}}">
+                    <a href="">
                         <span class="la la-check-circle"></span>
-                        Les inscriptions
+                     Résultats étudiants
                     </a>
                 </li>
                 <li>
-                    <a href="{{url('/AdminProfesseurs')}}">
+                    <a href="">
                         <span class="la la-chalkboard-teacher"></span>
-                        Les professeurs
+                        Réclamations
                        </a>
                 </li>
                 <li>
-                    <a href="{{url('/AdminFormations')}}">
-                    <span class="la la-chalkboard"></span>
-                      les Formations 
-                    </a>
-                </li>
-                <li>
-                    <a href="{{url('/AdminMails')}}">
+                    <a href="">
                     <span class="las la-envelope"></span>
                       boîte e-mails
                     </a>
@@ -88,29 +71,17 @@
                 
              </ul>
             </div>
+        </div>
     </div>
-</div>
-<div class="main-content">
+    <div class="main-content">
         <header>
              <div class="menu-toggle">
                 <label for="">
                     <span class="las la-bars"></span>
                         </label>
              </div>
-        <div class="header-icons">
-                <span class="las la-search"></span>
-                <span class="las la-bookmark"></span>
-                <span class="las la-sms"></span>
-            </div>
         </header>
-        <main>
-            <div class="page-header">
-               <div>
-                <h1>Statistiques</h1>
-                <small style="color:#8da2fb">Statistiques de ce mois</small>
-               </div>
-            </div>
+    </div>
 </body>
 </html>
-        
-    
+       

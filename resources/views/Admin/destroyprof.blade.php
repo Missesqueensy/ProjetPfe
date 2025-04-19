@@ -1,54 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
-    
-    <!--<link rel="stylesheet" href="Admindash.css">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de suppression</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/admindash.css') }}">
-
-    <title>Admin Dashboard Panel</title>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <style>
-        .gmail-container {
-            background: #f5f5f5;
+        .confirmation-card {
+            max-width: 600px;
+            margin: 2rem auto;
             border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-        .gmail-header {
-            background:#0d6efd ;
-            color: white;
-            padding: 15px;
-            border-radius: 8px 8px 0 0;
-            margin-bottom: 20px;
-        }
-        .gmail-btn {
-            background: #0d6efd;
-            color: white;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: 500;
-            transition: all 0.3s;
         }
-        .gmail-btn:hover {
-            background: #0d6efd;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .info-box {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 4px solid #0d6efd;
+        .profile-header {
+            background-color: #f8f9fa;
+            border-radius: 10px 10px 0 0;
+            padding: 1.5rem;
         }
     </style>
 </head>
-<body> 
+<body>
 <div class="dashboard-container">
 
     <div class="sidebar">
@@ -87,7 +61,7 @@
                       Réclamations
                     </a>
                 </li>
-                
+                <li>
                 <li>
                     <a href="{{url('/AdminForums')}}">
                     <span class="la la-wpforms"></span>
@@ -119,7 +93,6 @@
                     </a>
                 </li>
                 <li>
-                <li>
     <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
         @csrf
         <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
@@ -132,48 +105,56 @@
             </div>
     </div>
 </div>
-<div class="main-content">
-        <header>
-            <h1>Boîte emails</h1>
-        </header>
-    <div class="container-fluid py-4">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="gmail-container">
-                    <div class="gmail-header d-flex justify-content-between align-items-center">
-                        <!--<h3><i class="fas fa-envelope me-2"></i> Boîte Mail Administrateur</h3>-->
-                        <a href="https://mail.google.com" target="_blank" class="gmail-btn">
-                            <i class="fab fa-google me-2"></i> Ouvrir Gmail
+
+    <div class="main-content">
+        <div class="container">
+            <div class="card confirmation-card">
+                <div class="profile-header text-center bg-light py-4">
+                    <i class="las la-user-slash" style="font-size: 3rem; color: #dc3545;"></i>
+                    <h2 class="h4 mt-3">Confirmation de suppression</h2>
+                </div>
+                
+                <div class="card-body">
+                    <div class="alert alert-danger">
+                        <i class="las la-exclamation-triangle"></i> Cette action est irréversible
+                    </div>
+
+                    <div class="teacher-info mb-4">
+                        <h3 class="h5">{{ $enseignant->prenom }} {{ $enseignant->nom }}</h3>
+                        <ul class="list-unstyled">
+                            <li><strong>Email :</strong> {{ $enseignant->email }}</li>
+                            <li><strong>Spécialité :</strong> {{ $enseignant->specialite }}</li>
+                            <li><strong>Département :</strong> {{ $enseignant->departement }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <a href="{{ route('Admin.professeurs.indexprofesseur') }}" class="btn btn-outline-secondary">
+                            <i class="las la-arrow-left"></i> Annuler
                         </a>
-                    </div>
-
-                    <div class="info-box">
-                        <h5><i class="fas fa-info-circle text-primary me-2"></i> Comment accéder à vos emails</h5>
-                        <p class="mb-0">Cliquez sur le bouton "Ouvrir Gmail" ci-dessus pour accéder directement à votre boîte Gmail dans un nouvel onglet.</p>
-                    </div>
-
-                    <div class="text-center py-4">
-                        <div class="alert alert-info d-inline-block">
-                            <!--<i class="fas fa-sync-alt me-2"></i> Cette page ne montre pas directement les emails pour des raisons de sécurité.</i>-->
-                        </div>
-                    </div>
-
-                    <div class="d-grid gap-2">
-                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@votresite.com" 
-                           target="_blank"
-                           class="btn btn-outline-danger">
-                           <i class="fas fa-paper-plane me-2"></i> Envoyer un email
-                        </a>
+                        
+                        <form action="{{ route('Admin.professeurs.destroyprofesseur', $enseignant->id_enseignant) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">
+                                <i class="las la-trash"></i> Confirmer la suppression
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Option: Ouvrir Gmail automatiquement dans un nouvel onglet au chargement
-        // window.open('https://mail.google.com', '_blank');
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Script pour confirmation supplémentaire
+    document.querySelector('form').addEventListener('submit', function(e) {
+        if (!confirm('Êtes-vous absolument sûr de vouloir supprimer définitivement ce professeur ?')) {
+            e.preventDefault();
+        }
+    });
+</script>
 </body>
 </html>

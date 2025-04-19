@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Etudiant; // L'importation doit être ici, avant les tableaux de configuration
-
+use App\Models\enseignant;
 return [
 
     'defaults' => [
@@ -18,6 +18,10 @@ return [
             'driver' => 'session',
             'provider' => 'etudiants', // Le provider que tu as défini plus bas
         ],
+        'enseignant' => [
+        'driver' => 'session',
+        'provider' => 'enseignants',
+    ],
 
         'api' => [
             'driver' => 'token',
@@ -39,6 +43,10 @@ return [
         'admins' => [
     'driver' => 'eloquent',
     'model' => App\Models\Admin::class,
+],
+'enseignants' => [
+    'driver' => 'eloquent',
+    'model' => App\Models\enseignant::class,
 ],
 
     ],

@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
     
     <link rel="stylesheet" href="{{ asset('assets/css/admindash.css') }}">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ asset('js/adminchart.js') }}"></script>
     <title>Admin Dashboard Panel</title>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 </head>
@@ -13,7 +16,7 @@
 <div class="dashboard-container">
 
     <div class="sidebar">
-    <div class="sidebar-brand">
+        <div class="sidebar-brand">
             <div class="brand-flex">
                 <img src="{{asset('assets/img/logosvg.svg')}}" width="50px"alt="">
                <div class="brand-icons">
@@ -48,7 +51,7 @@
                       Réclamations
                     </a>
                 </li>
-               
+                
                 <li>
                     <a href="{{url('/AdminForums')}}">
                     <span class="la la-wpforms"></span>
@@ -91,50 +94,35 @@
              </ul>
             </div>
     </div>
-
 </div>
 <div class="main-content">
-    <header>
-        <div class="menu-toggle">
-            <label for="">
-                <span class="las la-bars"></span>
-            </label>
-        </div>
-    </header>
-
-            <div class="page-header">
-               <div>
-                <h1>Tous les formulaires</h1>
-                <small style="color:#8da2fb">Nouveaux formulaires</small>
-               </div>
-            </div>
-        
-<div class="cards">
-                @forelse($formulaires as $formulaire)
-                    <div class="card single">
-                        <div class="card-body">
-                            <h3>{{ $formulaire->titre }}</h3>
-                            <p><strong>Publié par :</strong> {{ $formulaire->etudiant->nom ?? 'Inconnu' }}</p>
-                            <p><strong>Date de publication :</strong> {{ $formulaire->date_publication }}</p>
-                            <p><strong>Type :</strong> {{ $formulaire->type_sujet ?? 'Non spécifié' }}</p>
-                            <p><strong>Statut :</strong> {{ $formulaire->statut }}</p>
-                            <p><strong>Nombre de vues :</strong> {{ $formulaire->vue }}</p>
-                            <p><strong>Contenu :</strong><br>{{ Str::limit($formulaire->contenu, 150) }}</p>
-                            
-                            @if($formulaire->image)
-                                <img src="{{ asset('assets/img/logo.jpg' . $formulaire->image) }}" alt="Image" width="100%">
-
-                            @endif
-
-                            <a href="{{ url('/admin/formulaires/'.$formulaire->id) }}" class="btn btn-primary" style="margin-top:10px; display:inline-block;">Voir plus</a>
-                        </div>
-                    </div>
-                @empty
-                    <p>Aucun formulaire n’a encore été publié.</p>
-                @endforelse
-            </div>
-        </main>
-    </div>
+        <header>
+             <div class="menu-toggle">
+                <label for="">
+                    <span class="las la-bars"></span>
+                        </label>
+             </div>
+        </header>
+        @foreach($reclamations as $reclamation)
+    <tr>
+        <td>{{ $reclamation->type }}</td>
+        <td>
+            {{ $reclamation->expediteur->nom }} ({{ class_basename($reclamation->expediteur_type) }})
+        </td>
+        <td>
+            @if($reclamation->destinataire)
+                {{ $reclamation->destinataire->nom }} ({{ class_basename($reclamation->destinataire_type) }})
+            @else
+                N/A
+            @endif
+        </td>
+        <td>{{ Str::limit($reclamation->contenu, 50) }}</td>
+        <td>{{ $reclamation->statut }}</td>
+        <td>
+            <a href="{{ route('admin.reclamations.show', $reclamation) }}" class="btn btn-info btn-sm">Voir</a>
+        </td>
+    </tr>
+@endforeach
 </div>
 </body>
 </html>-->
@@ -149,47 +137,47 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    <title>Gestion des Formulaires</title>
+    <title>Gestion des Réclamations</title>
     <style>
-        .formulaire-card {
+        .reclamation-card {
             transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #4e73df;
-        }
-        .formulaire-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .formulaire-header {
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            padding-bottom: 0.75rem;
             margin-bottom: 1rem;
+            border-left: 4px solid transparent;
         }
-        .badge-type {
-            background-color: #4e73df;
-            color: white;
+        .reclamation-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        .badge-status {
+        .reclamation-card.etud_vers_etud {
+            border-left-color: #4e73df;
+        }
+        .reclamation-card.etud_vers_prof {
+            border-left-color: #1cc88a;
+        }
+        .reclamation-card.prof_vers_etud {
+            border-left-color: #f6c23e;
+        }
+        .status-badge {
             font-size: 0.75rem;
             padding: 0.35em 0.65em;
         }
-        .content-preview {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            color: #6c757d;
-        }
-        .author-badge {
+        .user-badge {
             background-color: #f8f9fa;
             border-radius: 50px;
             padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
             display: inline-flex;
             align-items: center;
         }
-        .author-badge i {
+        .user-badge i {
             margin-right: 0.5rem;
-            color: #4e73df;
+        }
+        .content-preview {
+            color: #6c757d;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -197,7 +185,7 @@
 <div class="dashboard-container">
 
     <div class="sidebar">
-    <div class="sidebar-brand">
+        <div class="sidebar-brand">
             <div class="brand-flex">
                 <img src="{{asset('assets/img/logosvg.svg')}}" width="50px"alt="">
                <div class="brand-icons">
@@ -232,7 +220,7 @@
                       Réclamations
                     </a>
                 </li>
-               
+                
                 <li>
                     <a href="{{url('/AdminForums')}}">
                     <span class="la la-wpforms"></span>
@@ -275,7 +263,7 @@
              </ul>
             </div>
     </div>
-
+</div>
     <div class="main-content">
         <header>
             <div class="menu-toggle">
@@ -286,76 +274,103 @@
         </header>
 
         <div class="container-fluid py-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h1 class="h3 mb-0 text-gray-800">Tous les formulaires</h1>
-                    <small class="text-muted">Nouveaux formulaires</small>
-                </div>
-                <div>
-                    <!--<button class="btn btn-primary">
-                        <i class="fas fa-plus me-2"></i> Nouveau formulaire
-                    </button>-->
-                </div>
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Gestion des Réclamations</h1>
             </div>
 
             <div class="row">
-                @forelse($formulaires as $formulaire)
-                <div class="col-md-6 col-lg-4">
-                    <div class="card formulaire-card">
-                        <div class="card-body">
-                            <div class="formulaire-header d-flex justify-content-between">
-                                <div>
-                                    <span class="badge badge-type mb-2">
-                                        {{ $formulaire->type_sujet ?? 'Question' }}
-                                    </span>
-                                    <h5 class="mb-0">{{ $formulaire->titre }}</h5>
-                                </div>
-                                <span class="badge bg-{{ 
-                                    $formulaire->statut === 'publiée' ? 'success' : 
-                                    ($formulaire->statut === 'en attente' ? 'warning' : 'secondary') 
-                                }} badge-status">
-                                    {{ ucfirst($formulaire->statut) }}
-                                </span>
-                            </div>
-
-                            <div class="author-badge mb-3">
-                                <i class="fas fa-user-circle"></i>
-                                <span>{{ $formulaire->etudiant->nom ?? 'Anonyme' }}</span>
-                               
-                            </div>
-
-                            <div class="content-preview mb-3">
-                                {{ $formulaire->contenu }}
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <small class="text-muted">
-                                        <i class="fas fa-eye me-1"></i> {{ $formulaire->vue }} vues
-                                    </small>
-                                </div>
-                                <a href="{{ url('/admin/formulaires/'.$formulaire->id) }}" 
-                                   class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-arrow-right me-1"></i> Voir plus
+                <div class="col-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Liste des réclamations</h6>
+                            <div class="dropdown no-arrow">
+                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" 
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                 </a>
+                                <ul class="dropdown-menu dropdown-menu-right shadow animated--fade-in" 
+                                    aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Exporter en PDF</a></li>
+                                    <li><a class="dropdown-item" href="#">Filtrer</a></li>
+                                </ul>
                             </div>
+                        </div>
+                        <div class="card-body">
+                            @foreach($reclamations as $reclamation)
+                            <div class="card reclamation-card mb-3 {{ $reclamation->type }}">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-3">
+                                            <span class="badge status-badge bg-{{ 
+                                                $reclamation->statut === 'traité' ? 'success' : 
+                                                ($reclamation->statut === 'rejeté' ? 'danger' : 'warning') 
+                                            }}">
+                                                {{ ucfirst($reclamation->statut) }}
+                                            </span>
+                                            <small class="text-muted d-block mt-1">
+                                                {{ $reclamation->created_at->format('d/m/Y H:i') }}
+                                            </small>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="user-badge">
+                                                <i class="fas fa-user-circle"></i>
+                                                <span>
+                                                    {{ $reclamation->expediteur->nom ?? 'Utilisateur supprimé' }}
+                                                    <small class="text-muted">
+                                                        ({{ class_basename($reclamation->expediteur_type) }})
+                                                    </small>
+                                                </span>
+                                            </div>
+                                            <i class="fas fa-arrow-right mx-2 text-muted"></i>
+                                            <div class="user-badge mt-2">
+                                                <i class="fas fa-user-circle"></i>
+                                                <span>
+                                                    @if($reclamation->destinataire)
+                                                        {{ $reclamation->destinataire->nom }}
+                                                        <small class="text-muted">
+                                                            ({{ class_basename($reclamation->destinataire_type) }})
+                                                        </small>
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p class="content-preview mb-0">
+                                                {{ Str::limit($reclamation->contenu, 120) }}
+                                            </p>
+                                        </div>
+                                        <div class="col-md-2 text-end">
+                                            <a href="{{ route('admin.reclamations.show', $reclamation) }}" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye me-1"></i> Détails
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                        <div class="card-footer">
+                            {{ $reclamations->links() }}
                         </div>
                     </div>
                 </div>
-                @empty
-                <div class="col-12">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i> Aucun formulaire n'a encore été publié.
-                    </div>
-                </div>
-                @endforelse
             </div>
-
-            
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Activer les tooltips Bootstrap
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
+</script>
 </body>
 </html>

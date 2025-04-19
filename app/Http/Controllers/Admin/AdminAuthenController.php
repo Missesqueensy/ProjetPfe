@@ -17,6 +17,7 @@ use App\Models\enseignant;
 use App\Models\commentaire;
 use App\Models\formulaire;
 use App\Models\cours;
+use App\Models\Reclamation;
 use App\Models\Inscription;
 
 
@@ -52,9 +53,9 @@ class AdminAuthenController extends \App\Http\Controllers\Controller
         return view('admin.etudiants', compact('etudiants'));
     }
     //affichage des enseignant
-    public function professeurs() {
-        $professeurs = Enseignant::all();
-        return view('Admin.Lesprofesseurs', compact('professeurs'));
+    public function enseignants() {
+        $enseignants = Enseignant::all();
+        return view('Admin.Lesprofesseurs', compact('enseignants'));
     }
     //affichage des commentaires
     public function commentaires() {
@@ -79,10 +80,54 @@ class AdminAuthenController extends \App\Http\Controllers\Controller
 
     return view('Admin.Lesinscriptions', compact('newRegistrations'));
 }
+public function email(){
+    return view('Admin.emails');
+}
+//partie des relamations
+public function index()
+{
+    $reclamations = Reclamation::with(['expediteur', 'destinataire'])
+                     ->latest()
+                     ->paginate(10);
+
+    return view('Admin.Réclamations', compact('reclamations'));
+}
+
+public function show(Reclamation $reclamation)
+{
+    return view('Admin.showreclamation', compact('reclamation'));
+}
     // Déconnexion de l'admin
-    public function logout()
-    {
-        Auth::guard('admin')->logout();
-        return redirect()->route('Adminlog')->with('success', 'Déconnexion réussie.');
-    }
+    public function logout(Request $request)
+{
+    Auth::guard('admin')->logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+       return redirect()->route('LogAdmin.submit')->with('success', 'Déconnexion réussie.');
+
+   // return redirect()->route('admin.login')->with('success', 'Déconnexion réussie.');
+}
+public function envoyerReponse(Request $request, Reclamation $reclamation)
+{
+    logger()->info('Réclamation reçue:', [$reclamation->id]);
+
+    $request->validate([
+        'reponse' => 'required|string|max:1000'
+    ]);
+
+    // Enregistrer la réponse (adaptez selon votre structure)
+    $reclamation->update([
+        'reponse' => $request->reponse,
+        'statut' => 'répondu',
+        'date_reponse' => now(),
+        'admin_id' => auth('admin')->id()
+    ]);
+
+    // Optionnel : Envoyer une notification
+    // Notification::send($reclamation->expediteur, new ReclamationReponse($reclamation));
+
+    return redirect()
+           ->route('admin.reclamations.show', $reclamation)
+           ->with('success', 'Réponse envoyée avec succès');
+}
 }

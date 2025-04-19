@@ -22,7 +22,7 @@
     top:0;
     height:100%;
     padding:1rem 1.5rem;
-    background-color: #8da2fb;
+    background-color: #c433ff;
  }
 
  .sidebar-brand{
@@ -126,7 +126,7 @@
  .header-actions button{
     outline: none;
     color: #fff;
-    background: #5850ec;
+    background: #c433ff;
     border: 2px solid #ccc;
     padding: .6rem 1rem;
     margin-left: 1rem  ;
@@ -237,29 +237,4 @@ color: seagreen;
    object-fit: cover;
    border-radius: 8px;
    margin-bottom: 15px;
-}
-.formation-card {
-   transition: transform 0.3s ease, box-shadow 0.3s ease;
-   height: 100%;
-}
-.formation-card:hover {
-   transform: translateY(-5px);
-   box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-.formation-img {
-   height: 180px;
-   object-fit: cover;
-   width: 100%;
-   border-radius: 8px 8px 0 0;
-}
-.badge-duree {
-   background-color: #0d6efd;
-}
-.date-range {
-   font-size: 0.85rem;
-   color: #6c757d;
-}
-.action-buttons .btn {
-   margin-right: 5px;
-   min-width: 80px;
 }

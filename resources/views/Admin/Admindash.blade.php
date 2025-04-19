@@ -44,17 +44,12 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{url('/AdminAnalyses')}}">
+                    <a href="{{url('/adminAnalyses')}}">
                     <span class="las la-chart-pie"></span>
-                      Analyses
+                      Réclamations
                     </a>
                 </li>
-                <li>
-                    <a href="{{url('/AdminCalendrier')}}">
-                        <span class="las la-calendar"></span>
-                        calendrier
-                    </a>
-                </li>
+               
                 <li>
                     <a href="{{url('/AdminForums')}}">
                     <span class="la la-wpforms"></span>
@@ -85,6 +80,15 @@
                       boîte e-mails
                     </a>
                 </li>
+                <li>
+    <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
+        @csrf
+        <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
+            <span class="las la-sign-out-alt"></span>
+            Déconnexion
+        </button>
+    </form>
+</li>
                 
              </ul>
             </div>
@@ -241,5 +245,6 @@
                 
         </main>
     </div>
+    
 </body>
 </html> 
