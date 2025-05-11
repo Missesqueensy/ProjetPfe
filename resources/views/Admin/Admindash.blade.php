@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="sidebar-user">
-            <img src="{{asset('assets/img/carousel-1.jpg')}}" height=50 width=50 alt="">
+            <img src="{{asset('assets/img/user1.jpeg')}}" height=50 width=50 alt="">
             <div>
                 <h3>AHLAME LAD</h3>
                 <span>Ladahlame@admin.com</span>

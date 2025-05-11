@@ -19,11 +19,15 @@ class Formation extends Model
         'image',
         'date_debut',
         'date_fin',
+        'contenu_video',
     ];
 
     protected $dates = [
         'date_debut',
         'date_fin',
+    ];
+    protected $casts = [
+        'date_debut' => 'datetime', // Convertit automatiquement en Carbon
     ];
 }
 ?>

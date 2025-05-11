@@ -23,16 +23,21 @@ class CoursController extends Controller
         return view('Admin.index', compact('courses'));
     }
     public function index_enseignant()
-{
-    $courses = Cours::where('id_enseignant', auth()->id())->get();
-    return view('enseignant.coursesenseignant', compact('courses'));
-}
+    {
+        // 1. Récupère uniquement les cours de l'enseignant connecté
+        $courses = Cours::where('id_enseignant', auth()->id())
+                       ->orderBy('created_at', 'desc') // Tri par date récente
+                       ->paginate(10); // Pagination (10 cours/page)
+        
+        // 2. Retourne la vue avec les données
+        return view('enseignant.index', compact('courses'));
+    }
 
     // CoursController.php
 
 public function create()
 { $enseignants = Enseignant::all(); 
-    return view('Admin.create', compact('enseignants'));
+    return view('enseignant.create', compact('enseignants'));
 }
 public function show($id_cours)
 {
@@ -43,57 +48,8 @@ public function show($id_cours)
     return view('Admin.show', compact('cours'));
 }
 
-    /*public function store(Request $request)
-    {
-        $validated = $request->validate([
-           // 'titre' => 'required|regex:/^[\p{L}\s\'-]+$/u', // Expression régulière plus permissive
-           'titre' => 'required|string|max:255',
-           'description' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5000',
-            'id_enseignant' => 'required|exists:enseignant,id_enseignant'
-
-        ]);
-
-        $data = [
-            'titre' => $validated['titre'],
-            'description' => $validated['description'],
-            'id_enseignant' => $validated['id_enseignant']
-        ];
-        if ($request->hasFile('image')) {
-            $filename = $request->file('image')->store('courses', 'public');
-            $data['image'] = $filename;
-        }
-
-        Cours::create($data);
-
-        //return redirect()->route('Admin.courses')->with('success', 'Cours créé avec succès!');
-        return redirect()->route('Admin.courses.index')
-                   ->with('success', 'Cours créé avec succès!');
-    }*/
-    /*public function store(Request $request)
-{
-    $validated = $request->validate([
-        'titre' => 'required|string|max:255',
-        'description' => 'required|string',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:5000',
-        'id_enseignant' => 'sometimes|exists:enseignant,id_enseignant'
-    ]);
-
-    $data = $request->only(['titre', 'description', 'id_enseignant']);
-
-    if ($request->hasFile('image')) {
-        $data['image'] = $request->file('image')->store('cours', 'public');
-    }
-
-    try {
-        Cours::create($data);
-        return redirect()->route('Admin.courses.index')
-               ->with('success', 'Cours créé avec succès!');
-    } catch (\Exception $e) {
-        return back()->withInput()
-               ->with('error', 'Erreur: ' . $e->getMessage());
-    }
-}*/
+   
+    
 public function store(Request $request)
 {
     // Validation
@@ -101,23 +57,29 @@ public function store(Request $request)
         'titre' => 'required|string|max:255',
         'description' => 'nullable|string',
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'file' => 'nullable|file|mimes:pdf|max:10240',
+        'video' => 'nullable|file|mimes:mp4,webm,mov|max:51200', // 50MB
+        'file' => 'nullable|file|mimes:pdf|max:10240', // Si vous voulez garder le PDF
+        'est_public' => 'nullable|boolean',
     ]);
 
     // Stockage des fichiers
     $imagePath = $request->file('image')->store('cours/images', 'public');
     $filePath = $request->hasFile('file') ? $request->file('file')->store('cours/files', 'public') : null;
+    $videoPath = $request->hasFile('video') ? $request->file('video')->store('cours/videos', 'public') : null;
 
     // Création du cours avec l'enseignant authentifié
     $cours = new Cours();
     $cours->titre = $validated['titre'];
     $cours->description = $validated['description'];
     $cours->image = $imagePath;
-    $cours->file = $filePath;
-    $cours->id_enseignant = auth()->id()??1; // L'enseignant connecté
+    $cours->video_path = $videoPath; // Utilisez le nom de colonne correct
+    $cours->format_video = $request->hasFile('video') ? $request->file('video')->getClientOriginalExtension() : null;
+    $cours->est_public = $request->boolean('est_public');
+    $cours->id_enseignant = auth()->id() ?? 1; // L'enseignant connecté
+    
     $cours->save();
 
-    return redirect()->route('Enseignant.courses.index')->with('success', 'Cours créé avec succès');
+    return redirect()->route('enseignant.courses.index')->with('success', 'Cours créé avec succès');
 }
 public function edit($id)
 {

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('enseignant', function (Blueprint $table) {
-            $table->increments('id_enseignant'); // clé primaire personnalisée
+            $table->unsignedBigInteger('id_enseignant'); // clé primaire personnalisée
             $table->string('specialite');
             $table->string('departement');
             $table->string('nom');
@@ -32,3 +32,4 @@ return new class extends Migration
         Schema::dropIfExists('enseignant');
     }
 };
+?>

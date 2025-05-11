@@ -93,10 +93,21 @@ public function index()
     return view('Admin.Réclamations', compact('reclamations'));
 }
 
-public function show(Reclamation $reclamation)
-{
-    return view('Admin.showreclamation', compact('reclamation'));
-}
+public function show($id)
+    {
+        $reclamation = Reclamation::with([
+                'expediteur' => function($query) {
+                    $query->withTrashed();
+                }, 
+                'destinataire' => function($query) {
+                    $query->withTrashed();
+                },
+                'admin'
+            ])
+            ->findOrFail($id);
+
+        return view('Admin.showreclamation', compact('reclamation'));
+    }
     // Déconnexion de l'admin
     public function logout(Request $request)
 {

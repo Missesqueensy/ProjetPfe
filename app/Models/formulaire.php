@@ -4,39 +4,34 @@ namespace App\Models;
     
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-    
-    class Formulaire extends Model
-    {
-        use HasFactory;
-    
-        // Définir le nom de la table si ce n'est pas le nom par défaut (pluriel du modèle)
-        protected $table = 'formulaire';
-    
-        // Activer les timestamps pour gérer les dates de création et de modification
-        public $timestamps = false;
-    
-        // Spécifier les colonnes que vous pouvez mass-assign (pour des insertions ou des mises à jour en masse)
-        protected $fillable = [
-            'id_etudiant',
-            'titre',
-            'contenu',
-            'type_sujet',
-            'statut',
-            'vue',
-            'moderation_commentaire',
-            'nombre_commentaires',
-            'image',
-            'date_publication',
-            'date_modification',
-            'visible',
-        ];
-    
-        // Définir la relation avec l'étudiant (si vous avez une table users pour les étudiants)
-        public function etudiant()
-        {
-            return $this->belongsTo(Etudiant::class, 'id_etudiant','id_etudiant');
-        }
-    
-        // Vous pouvez également ajouter un mutateur pour `statut` ou `visible` si vous voulez le gérer différemment.
-    }
-    
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Formulaire extends Model
+{
+    protected $table = 'formulaires'; // Correspond au nom de ta table
+
+    protected $primaryKey = 'id_formulaire'; // Clé primaire personnalisée
+
+    protected $fillable = [
+        'titre',
+        'contenu',
+        'type',
+        'id_etudiant',
+    ];
+
+    /**
+     * Relation : un formulaire appartient à un étudiant.
+     */
+    public function etudiant()
+{
+    return $this->belongsTo(Etudiant::class, 'id_etudiant', 'id_etudiant')
+                ->withDefault([
+                    'nom' => 'Étudiant Supprimé',
+                    'id_etudiant' => null
+                ]); // Valeur par défaut si la relation est null
+}
+    public function commentaires()
+{
+    return $this->hasMany(Commentaire::class, 'id_formulaire', 'id_formulaire');
+}
+}

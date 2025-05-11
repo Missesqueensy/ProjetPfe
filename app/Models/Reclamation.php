@@ -1,5 +1,5 @@
-<?php 
-namespace App\Models;
+<?php
+/*namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,7 +29,7 @@ class Reclamation extends Model
         }
     });
 }*/
-public function expediteur()
+/*public function expediteur()
 {
     return $this->morphTo()->withDefault(function () {
         return (object) [
@@ -38,9 +38,9 @@ public function expediteur()
             'type' => $this->expediteur_type ? class_basename($this->expediteur_type) : 'Inconnu'
         ];
     });
-}
+}*/
 
-protected function createDefaultExpediteur()
+/*protected function createDefaultExpediteur()
 {
     return (object) [
         'nom' => 'Utilisateur supprimé',
@@ -69,7 +69,57 @@ protected function createDefaultExpediteur()
     }
     return $this->expediteur;
 }
+    }*/
 
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Reclamation extends Model
+{
+    protected $table = 'reclamation';
+    protected $fillable = [
+        'contenu',
+        'type',
+        'statut',
+        'expediteur_id',
+        'expediteur_type',
+        'destinataire_id',
+        'destinataire_type',
+        'reponse',
+        'date_reponse',
+        'admin_id',
+    ];
+    
+    
+    // Relation avec l'expéditeur (polymorphe)
+    public function expediteur()
+    {
+        return $this->morphTo();
     }
+    
+    // Relation avec le destinataire (polymorphe)
+    public function destinataire()
+    {
+        return $this->morphTo();
+    }
+    
+    // Relation avec l'admin (si nécessaire)
+    public function admin()
+    {
+        return $this->belongsTo('App\Models\Admin', 'admin_id');
+    }
+    public function typeToString(): string
+    {
+        return match($this->type) {
+            'prof_vers_etud' => 'Enseignant vers Étudiant',
+            'etud_vers_prof' => 'Étudiant vers Enseignant',
+            'etud_vers_etud' => 'Étudiant vers Étudiant',
+            default => $this->type, // Fallback si nouveau type non géré
+        };
+    }
+    
+}
+    
    
 ?>

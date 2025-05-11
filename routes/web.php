@@ -12,6 +12,7 @@ use App\Http\Controllers\Etudiant\IndexEtudiantController;
 use App\Http\Controllers\Sp\IndexSpController;
 use App\Http\Controllers\Enseignant\IndexEnseignantController;
 use App\Http\Controllers\Etudiant\InscripController;
+use App\Http\Controllers\NoteController;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Etudiant\DashboardController;
@@ -20,11 +21,14 @@ use App\Http\Controllers\SupConxController;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\CoursController;
 use App\Http\Controllers\EnseignantController;
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\FormationController;
 use App\Http\Controllers\FormulaireController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\ReclamationController;
 use App\Models\Enseignant;
+use App\Http\Livewire\TeacherSchedule;
+use App\Livewire\EmploiEnseignant;
 
 Route::get('/courses', function () {
     $courses = DB::table('cours')->get();
@@ -102,20 +106,25 @@ Route::get('/admin/courses/index', [CoursController::class, 'index'])->name('Adm
 Route::get('/admin/courses/create', [CoursController::class, 'create'])->name('Admin.courses.create');
 
 // Route pour stocker le cours après soumission du formulaire
-Route::post('/admin/courses/stpre', [CoursController::class, 'store'])->name('Admin.courses.store');
+Route::post('/admin/courses/store', [CoursController::class, 'store'])->name('Admin.courses.store');
 //affichage cours
 Route::get('/admin/courses/{id_cours}', [CoursController::class, 'show'])->name('Admin.courses.show');
 //modification du cours 
 Route::put('/admin/courses/{id}', [CoursController::class, 'update'])->name('Admin.courses.update');
 //route vers analyses
-Route::get('/adminAnalyses', [AdminAuthenController::class, 'index'])->name('admin.reclamations.index');
-Route::get('/adminAnalyses/show', [AdminAuthenController::class, 'show'])->name('admin.reclamations.show');
-Route::post('/admin/reclamations/{reclamation}/reponse', [AdminAuthenController::class, 'envoyerReponse'])
-        ->name('admin.reclamations.response');
-        Route::post('/adminAnalyses/show', [AdminAuthenController::class, 'show'])->name('admin.reclamations.show');
+Route::get('/adminAnalyses', [ReclamationController::class, 'index'])->name('admin.reclamations.index');
+Route::get('/adminAnalyses/show/{reclamation}', [ReclamationController::class, 'show'])->name('admin.reclamations.show');
+Route::get('/admin/reclamations/{reclamation}/response', [ReclamationController::class, 'showResponseForm'])
+     ->name('admin.reclamations.response.form');
+     
+Route::post('/admin/reclamations/{reclamation}/response', [ReclamationController::class, 'envoyerReponse']) ->name('admin.reclamations.response');
+Route::post('/Admin/courses/store', [ReclamationController::class, 'store'])->name('admin.reclamations.store');
 
 //route admin vers formulaires
-Route::get('/AdminForums', [FormulaireController::class, 'afficherFormulaires'])->name('AdminForums');
+Route::get('/admin/formulaires/{formulaire}', [FormulaireController::class, 'show'])
+     ->name('admin.Unformulaire.show');
+//Route::get('/admin/formulaires/{id}', [FormulaireController::class, 'show']) ->name('admin.Unformulaire.show');
+Route::get('/AdminForums', [FormulaireController::class, 'afficherFormulaires'])->name('admin.formulaires.show');
 //route admin vers professeurs
 Route::get('/AdminProfesseurs',[AdminAuthenController::class,'enseignants'])->name('Admin.Lesprofesseurs');
 //route admin creation professeur
@@ -144,11 +153,19 @@ Route::get('/AdminInscription',[InscriptionController::class,'index'])->name('Ad
 //route admin vers les infod=s inscris
 Route::get('/AdminInscripshow/{id_etudiant}',[InscriptionController::class,'show'])->name('admin.etudiant.show');
 Route::get('/AdminInscripstatus/{id_etudiant}',[InscriptionController::class,'status'])->name('admin.etudiant.status');
-Route::post('/AdminInscripstatus/{id_etudiant}',[InscriptionController::class,'status'])->name('admin.etudiant.status');
 Route::patch('/AdminInscripstatus/{id_etudiant}', [InscriptionController::class, 'status']);
 
 //route admin vers les formations
-Route::get('/AdminFormations',[FormationController::class,'afficher'])->name('Admin.Lesformations');
+Route::get('/AdminFormations',[FormationController::class,'afficher'])->name('admin.formations.index');
+Route::get('/Admin/formations/create',[FormationController::class,'create'])->name('admin.formations.create');
+Route::get('/Admin/formations/{id_formation}',[FormationController::class,'show'])->name('admin.formations.show');
+Route::get('/Admin/formations/{id_formation}/edit',[FormationController::class,'edit'])->name('admin.formations.edit');
+Route::delete('/Admin/fromations/{id_formation}', [FormationController::class, 'destroy'])->name('admin.formations.destroy');
+Route::post('/Admin/formations/store', [FormationController::class, 'store'])->name('admin.formations.store');
+Route::put('/Admin/formations/{id_formation}', [FormationController::class, 'update'])->name('admin.formations.update');
+
+
+
 //route admin vers boite mail
 Route::get('/AdminMails',function(){
     return view('Admin.emails');
@@ -223,16 +240,62 @@ Route::middleware(['auth:enseignant'])->group(function () {
 Route::get('/enseignant/profile', [EnseignantController::class, 'showProfile'])
     ->name('enseignant.profile');
 
-Route::put('/enseignant/profile', [EnseignantController::class, 'updateProfile'])
-    ->name('enseignant.profile.update');
 
-    Route::get('/enseignant/cours/create', [CoursController::class, 'create'])->name('Enseignant.courses.create');
-    Route::post('/enseignant/cours', [CoursController::class, 'store'])->name('Enseignant.courses.store');
-    Route::get('/enseignant/cours', [CoursController::class, 'index_enseignant'])->name('Enseignant.courses.index');
+
 
 });
 
+
+// Dans web.php
+Route::get('/enseignant/cours', [EnseignantController::class, 'mescours'])->name('enseignant.courses.index');
+Route::delete('/enseignant/courses/{id}', [EnseignantController::class, 'destroy_cours'])->name('enseignant.courses.destroy');
+Route::get('enseignantt/courses/{id_cours}', [EnseignantController::class, 'showCours'])
+         ->name('enseignant.courses.show');
 Route::get('/enseignant/evaluations',[EnseignantController::class,'evaluation'])->name('enseignant.evaluations');
+// web.php
+Route::get('/enseignant/evaluations',[EvaluationController::class,'index'])->name('enseignant.evaluations.index');
+
+Route::get('/emploi-du-temps', [EmploiEnseignant::class,'emploi'])->name('enseignant.emploi');
+Route::get('/enseignant/evaluation/create',[EvaluationController::class,'create'])->name('enseignant.evaluations.create');
+Route::get('/enseignant/evaluation/{id_evaluation}',[EvaluationController::class,'show_evaluation'])->name('enseignant.evaluations.show');
+Route::post('/Enseignant/evaluation/store', [EvaluationController::class, 'store_evaluation'])->name('enseignant.evaluations.store');
+Route::put('/enseignant/evaluation/{id_evaluation}', [EvaluationController::class, 'update_evaluation'])->name('enseignant.evaluations.update');
+//Route::put('/enseignant/evaluation/publish', [EnseignantController::class, 'publier'])->name('enseignant.evaluations.publish');
+Route::put('/enseignant/evaluation/{evaluation}/publish', [EnseignantController::class, 'publier'])
+    ->name('enseignant.evaluations.publish');
+Route::delete('/enseignant/evaluation/{id_evaluation}', [EvaluationController::class, 'destroy_evaluation'])->name('enseignant.evaluations.destroy');
+Route::get('/evaluations/{id_evaluation}/notes/create', [NoteController::class, 'create'])
+     ->name('notes.create');
+Route::get('/enseignant/evaluations/{evaluation}/edit',[EvaluationController::class,'edit_evaluation'])->name('enseignant.evaluations.edit');
+/*Route::get('/enseignant/evaluations/notes', [NoteController::class, 'index'])
+     ->name('enseignant.notes.index');*/
+     //Route::get('/enseignant/evaluations/{id_evaluation}/notes', [NoteController::class, 'index'])
+    // ->name('enseignant.notes.index');
+    Route::get('/enseignant/notes/{evaluation}', [NoteController::class, 'index'])
+    ->name('enseignant.notes.index');
+// Temporairement dans la route
+Route::post('/enseignant/evaluations/{id_evaluation}/notes', [NoteController::class, 'store'])
+    ->name('enseignant.notes.store');
+Route::get('/test-find', function() {
+    $eval = App\Models\Evaluation::first();
+    dd($eval); // Vérifiez qu'une évaluation existe
+});
+   //Route::get('/enseignant/evaluations/{id}/notes', [NoteController::class, 'index'])->name('enseignant.notes.index');
+Route::post('/notes', [NoteController::class, 'store'])
+     ->name('enseignant.notes.store');
+     Route::post('/notes', [NoteController::class, 'create'])
+     ->name('enseignant.notes.create');
+     Route::post('/evaluations/{evaluation}/notes', [NoteController::class, 'store'])
+     ->name('enseignant.notes.store');
+Route::get('/Eenseignant/Reclamations', [ReclamationController::class, 'index_enseignant'])->name('enseignant.reclamations.index');
+Route::post('/enseignant/logout', [EnseignantController::class, 'logout'])->name('enseignant.logout');
+// Pour afficher le formulaire de création
+Route::get('/enseignant/reclamations/create', [ReclamationController::class, 'enseignant_createReclam'])
+     ->name('enseignant.reclamations.create');
+
+// Pour soumettre la réclamation
+Route::post('/enseignant/reclamations', [ReclamationController::class, 'enseignant_storeReclam'])
+     ->name('enseignant.reclamations.store');
 //déconnexion
 Route::post('/logout', function () {
     Auth::logout();
@@ -246,24 +309,24 @@ Route::post('/logout', function () {
 
 
 Route::get('/enseignant', [IndexEnseignantController::class, 'index']);
-
-//Route::get('/EnseignantCours', [CoursController::class, 'index'])->name('Enseignant.courses.index');
-Route::get('/Enseignant/courses/{id}/edit', [CoursController::class, 'edit'])->name('Enseignant.courses.edit');
+Route::get('/enseignant/dashboard/infos',[EnseignantController::class,'dashboard'])->name('enseignant.infos');
+Route::get('/enseignant/courses/{id_cours}/edit', [EnseignantController::class, 'edit_cours'])->name('enseignant.courses.edit');
+Route::get('/enseignant/profile/update',[EnseignantController::class,'updateprofile'])->name('enseignant.profile.update');
 //suppression du cours
-Route::delete('/Enseignant/courses/{id}', [CoursController::class, 'destroy'])->name('Enseignant.courses.destroy');
+Route::delete('/Enseignant/courses/{id}', [EnseignantController::class, 'destroy_cours'])->name('enseignant.courses.destroy');
 // afficher tous les cours
-Route::get('/Enseignant/courses/index', [CoursController::class, 'index_enseignant'])->name('Enseignant.courses.index');
 //creation cours
-Route::get('/Enseignant/courses/create', [EnseignantController::class, 'create'])->name('Enseignant.courses.create');
+Route::get('/Enseignant/courses/create', [EnseignantController::class, 'create'])->name('enseignant.courses.create');
 
 // Route pour stocker le cours après soumission du formulaire
-Route::post('/Enseignant/courses/store', [CoursController::class, 'store'])->name('Enseignant.courses.store');
+Route::post('/Enseignant/courses/store', [CoursController::class, 'store'])->name('enseignant.courses.store');
 //affichage cours
-Route::get('/Enseignant/courses/{id_cours}', [CoursController::class, 'show'])->name('Enseignant.courses.show');
 //modification du cours 
-Route::put('/Enseignant/courses/{id}', [CoursController::class, 'update'])->name('Enseignant.courses.update');
+Route::put('/Enseignant/courses/{id}', [EnseignantController::class, 'updatecours'])->name('enseignant.courses.update');
 
-
+Route::get('/EnseignantMails',function(){
+    return view('enseignant.emails');
+})->name('Enseignant.emails');
 
 //sppp
 Route::get('/sp', [IndexSpController::class, 'index']);
@@ -283,11 +346,38 @@ Route::middleware(['auth:professeur'])->group(function () {
 // Route commune pour la soumission
 Route::post('/reclamations', [ReclamationController::class, 'store'])->name('reclamations.store');
 use Illuminate\Support\Facades\Log;
-
+// Dans routes/web.php
 
 Route::get('/test-log', function () {
     Log::error('Ceci est un test de log Laravel');
     return 'Log ajouté';
 });
+// Route
+/*Route::get('/telecharger-consigne/{filename}', function ($filename) {
+    return response()->download(storage_path("app/public/evaluations/consignes/$filename"));
+});*/
+/*Route::get('/telecharger-consigne/{filename}', function ($filename) {
+    $path = storage_path("app/public/evaluations/consignes/$filename");
+
+    if (!file_exists($path)) {
+        abort(404, "Fichier non trouvé.");
+    }
+
+    return response()->download($path);
+})->name('telecharger-consigne');
+*/
+
+
+
+Route::get('/telecharger-consigne/{filename}', function ($filename) {
+    $filename = urldecode(trim($filename));
+    $path = storage_path("app/public/evaluations/consignes/$filename");
+
+    if (!file_exists($path)) {
+        return response("FICHIER INTROUVABLE<br>Nom reçu : [$filename]<br>Chemin : $path", 404);
+    }
+
+    return response()->download($path);
+})->name('telecharger-consigne');
 
 

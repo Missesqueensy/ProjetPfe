@@ -11,62 +11,95 @@
 </head>
 <body> 
 <div class="dashboard-container">
+    <!-- Sidebar amélioré -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <div class="brand-flex">
-                <img src="{{ asset('assets/img/logosvg.svg') }}" width="50px" alt="Logo">
+                <img src="{{ asset('assets/img/logosvg.svg') }}" width="50" alt="Logo de l'établissement" loading="lazy">
                 <div class="brand-icons">
                     <span class="las la-bell"></span>
                     <span class="las la-user-circle"></span>
                 </div>
             </div>
         </div>
+        
         <div class="sidebar-user">
-            <img src="{{ asset('assets/img/user.jpeg') }}" height="50" width="50" alt="Photo de profil">
+            <img src="{{ Auth::guard('enseignant')->user()->image ? asset('assets/img/user1.jpeg'.Auth::guard('enseignant')->user()->image) : asset('assets/img/user1.jpeg') }}" 
+                 width="50" height="50" alt="Photo de profil" class="rounded-circle" loading="lazy">
             <div>
-                <h3>Amal Assim</h3>
-                <span>Amalassim@gmail.com</span>
+                <span>{{ Auth::guard('enseignant')->user()->prenom }} {{ Auth::guard('enseignant')->user()->nom }}</span>
+                <small class="text-muted d-block">{{ Auth::guard('enseignant')->user()->email }}</small>
             </div>
         </div>
+        
         <div class="sidebar-menu">
-            <div class="menu-head">
-                <a href="{{ url('/enseignant/dashboard') }}">Mon Profil</a>
-            </div>
             <ul>
+                <li>
+                    <a href="{{ route('enseignant.dashboard') }}">
+                        <span class="las la-user"></span>
+                        Mon Profil
+                    </a>
+                </li>
                 <li class="active">
-                    <a href="{{ url('/enseignant/cours') }}">
-                        <span class="la la-book"></span>
+                    <a href="{{ route('enseignant.courses.index') }}">
+                        <span class="las la-book"></span>
                         Mes Cours
+                        <span class="badge bg-primary float-end">{{ Auth::guard('enseignant')->user()->courses->count() }}</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="la la-wpforms"></span>
-                        Evaluations
+                <a href="{{route('enseignant.evaluations.index')}}">
+
+                        <span class="las la-clipboard-list"></span>
+                        Évaluations
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                <a href="{{ route('enseignant.notes.index') }}">
                         <span class="la la-check-circle"></span>
-                        Résultats étudiants
+                     Résultats étudiants
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                <a href="{{route('enseignant.reclamations.index')}}">
                         <span class="la la-chalkboard-teacher"></span>
                         Réclamations
+                       </a>
+                </li>
+                <li>
+                    <a href="{{route('Enseignant.emails')}}">
+                    <span class="las la-envelope"></span>
+                      boîte e-mails
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="las la-envelope"></span>
-                        Boîte e-mails
-                    </a>
-                </li>
+    <form action="{{ route('enseignant.logout') }}" method="POST" style="display: inline;">
+        @csrf
+        <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
+            <span class="las la-sign-out-alt"></span>
+            Déconnexion
+        </button>
+    </form>
+</li>
+
             </ul>
         </div>
     </div>
 
+    <!-- Contenu principal -->
+    <div class="main-content">
+        <header class="sticky-top bg-white shadow-sm">
+            <div class="container-fluid py-2">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="menu-toggle">
+                        <button class="btn btn-outline-secondary">
+                            <span class="las la-bars"></span>
+                        </button>
+                    </div>
+                        <span class="me-3 d-none d-md-inline">Bonjour, {{ Auth::guard('enseignant')->user()->prenom }}</span> 
+                </div>
+            </div>
+        </header>
 <div class="main-content">
         <header>
             <h1>Enseignant dashboard</h1>
@@ -79,10 +112,10 @@
                     <li>
                         <strong>{{ $cours->titre }}</strong><br>
                         <small>{{ $cours->description }}</small><br>
-                        <a href="{{ route('Admin.courses.show', $cours->id_cours) }}">Voir</a>
+                        <a href="{{ route('enseignant.courses.show', $cours->id_cours) }}">Voir</a>
 
                         <!-- Formulaire de suppression -->
-                        <form action="{{ route('Admin.courses.destroy', $cours->id_cours) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('enseignant.courses.destroy', $cours->id_cours) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')" class="btn btn-danger">Supprimer</button>

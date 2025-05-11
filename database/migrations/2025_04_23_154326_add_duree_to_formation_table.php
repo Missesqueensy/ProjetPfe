@@ -9,19 +9,20 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('formulaire', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+    public function up()
+{
+    Schema::table('formations', function (Blueprint $table) {
+        $table->integer('duree')->after('date_fin');
+    });
+}
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('formulaire');
+        Schema::table('formations', function (Blueprint $table) {
+            //
+        });
     }
 };

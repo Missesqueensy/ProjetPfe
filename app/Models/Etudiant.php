@@ -18,7 +18,7 @@ class Etudiant extends Authenticatable // Étendre Authenticatable
 
 
     // Indiquer les champs qui peuvent être remplis en masse
-    protected $fillable = ['id_etudiant','nom', 'prénom', 'email', 'password', 'tel', 'CNI'];
+    protected $fillable = ['nom', 'prénom', 'email', 'password', 'tel', 'CNI', 'id_classe' ];
 
     // Hachage du mot de passe lors de la création ou mise à jour
     public static function boot()
@@ -41,6 +41,10 @@ class Etudiant extends Authenticatable // Étendre Authenticatable
 {
     return $this->hasMany(Formulaire::class, 'id_etudiant','id_etudiant');
 }
+public function classe()
+    {
+        return $this->belongsTo(Classe::class, 'id_classe', 'id_classe');
+    }
 public function reclamations()
 {
     return $this->morphMany(Reclamation::class, 'expediteur');
@@ -54,4 +58,10 @@ public function reclamationsRecues()
 {
     return $this->morphMany(Reclamation::class, 'destinataire');
 }
+// Dans App\Models\Etudiant.php
+public function notes()
+{
+    return $this->hasMany(Note::class, 'id_etudiant', 'id_etudiant');
+}
+
 }

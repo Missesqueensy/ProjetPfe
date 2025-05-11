@@ -5,23 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-/*class Enseignant extends Model
-{
-    use Notifiable;
-    protected $table = 'enseignant'; 
-    protected $primaryKey = 'id_enseignant'; 
-    public $timestamps = false; 
-    public $incrementing = true;
-    protected $fillable = ['id_enseignant', 'specialite', 'departement','nom','prenom','email','password'];
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
-    public function cours()
-    {
-        return $this->hasMany(Cours::class, 'id_enseignant');
-    }
-}*/
-
+use App\Models\EmploisDuTemps;
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -49,14 +33,22 @@ class Enseignant extends Authenticatable
         'password',
         'remember_token',
     ];
-
-    public function cours()
+    public function classes()
+    {
+        return $this->belongsToMany(Classe::class, 'cours_classe', 'id_enseignant', 'id_classe')
+                    ->withPivot('id_cours');
+    }
+    public function courses()
     {
         return $this->hasMany(Cours::class, 'id_enseignant');
     }
     public function reclamations()
 {
     return $this->morphMany(Reclamation::class, 'expediteur');
+}
+public function emploisDuTemps()
+{
+    return $this->hasMany(EmploiDuTemps::class, 'id_enseignant', 'id_enseignant');
 }
 public function reclamationsEnvoyees()
 {
@@ -70,5 +62,16 @@ public function reclamationsRecues()
 public function getAuthPassword()
 {
     return $this->password;
+}
+public function evaluations()
+{
+    return $this->hasMany(Evaluation::class, 'id_enseignant');
+}
+// Dans app/Models/Enseignant.php
+// Dans app/Models/Enseignant.php
+public function cours()
+{
+    return $this->hasMany(Cours::class, 'id_enseignant');
+    // Ou belongsToMany si un enseignant peut avoir plusieurs cours partagés
 }
 }

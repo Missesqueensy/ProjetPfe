@@ -4,7 +4,9 @@
     --light: #F0FBFC;
     --dark: #879cfc;
 }
-
+h2.m-0 text-primary{
+    color:#181d38;
+}
 .fw-medium {
     font-weight: 600 !important;
 }

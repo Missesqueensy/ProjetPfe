@@ -307,7 +307,6 @@
     $fallback = asset('assets/img/logo.jpg');
 @endphp
 
-<!--<img src="{{ asset('storage/' . $cours->image) }}"-->
 <img src="{{ asset('assets/img/' . $cours->image) }}"
 alt="{{ $cours->titre }}"
      class="course-img"

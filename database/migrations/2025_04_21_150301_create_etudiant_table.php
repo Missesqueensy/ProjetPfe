@@ -13,7 +13,7 @@ return new class extends Migration
         {        if (!Schema::hasTable('etudiant')) {
 
             Schema::create('etudiant', function (Blueprint $table) {
-                $table->increments('id');
+                $table->unsignedInteger('id_etudiant');
                 $table->string('nom');
                 $table->string('prénom');
                 $table->string('email')->unique();
@@ -31,4 +31,3 @@ return new class extends Migration
         }
     };
 
-    

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 use App\Models\Reclamation;
 use App\Models\Admin;
 use Illuminate\Http\Request;
-
+use App\Mail\ReclamationResponseMail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Etudiant;
 class ReclamationController extends Controller
 {
     public function store(Request $request)
@@ -39,4 +42,123 @@ class ReclamationController extends Controller
     
         return back()->with('success', 'Réclamation envoyée avec succès');
     }
+
+    public function index()
+    {
+        $reclamations = Reclamation::with([
+                'expediteur' => function($query) {
+                    $query->withTrashed(); // Inclut les expéditeurs supprimés
+                },
+                'destinataire' => function($query) {
+                    $query->withTrashed(); // Inclut les destinataires supprimés
+                }
+            ])
+            ->latest()
+            ->paginate(10);
+
+        return view('Admin.Réclamations', compact('reclamations'));
+    }
+    
+    public function index_enseignant()
+    {
+        // Récupère l'enseignant authentifié
+        $enseignant = Auth::guard('enseignant')->user();
+        
+       
+        $reclamations = Reclamation::where('destinataire_id', $enseignant->id)
+            ->where('destinataire_type', 'App\Models\Enseignant')
+            ->where('type', 'etud_vers_prof')
+            ->with(['expediteur', 'destinataire']) // Chargement des relations
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); // 🔁 pagination automatique
+
+        
+        return view('enseignant.Réclamations', compact('reclamations'));
+    }
+
+    public function show(Reclamation $reclamation)
+{
+    $reclamation->load(['expediteur', 'destinataire', 'admin']);
+    
+    return view('Admin.showreclamation', compact('reclamation'));
+}
+
+    public function response(Request $request, $id)
+    {
+        $request->validate([
+            'statut' => 'required|in:traité,rejeté',
+            'reponse' => 'required|string|min:10'
+        ]);
+
+        $reclamation = Reclamation::findOrFail($id);
+        
+        $reclamation->update([
+            'statut' => $request->statut,
+            'reponse' => $request->reponse,
+            'date_reponse' => now(),
+            'admin_id' => auth()->id()
+        ]);
+
+        return redirect()->route('reclamations.show', $reclamation->id)
+                         ->with('success', 'Réponse enregistrée avec succès');
+    }
+    
+public function showResponseForm(Reclamation $reclamation)
+{
+    $reclamation->load(['expediteur', 'destinataire']);
+    return view('admin.Reclamation.response', compact('reclamation'));
+}
+
+public function enseignant_createReclam()
+{
+    // Récupérer la liste des étudiants (à adapter selon votre logique)
+    $etudiants = Etudiant::all(); 
+    $type = 'prof_vers_etud'; // Définit explicitement le type
+
+    return view('enseignant.createReclamation', compact('etudiants'));
+}
+
+public function enseignant_storeReclam(Request $request)
+{
+    $request->validate([
+        'etudiant_id' => 'required|exists:etudiants,id',
+        'contenu' => 'required|string|max:1000',
+    ]);
+
+    Reclamation::create([
+        'contenu' => $request->contenu,
+        'type' => 'prof_vers_etud', // Type spécifique pour cette action
+        'statut' => 'en_attente',
+        'expediteur_id' => auth()->guard('enseignant')->id(),
+        'expediteur_type' => 'App\Models\Enseignant',
+        'destinataire_id' => $request->etudiant_id,
+        'destinataire_type' => 'App\Models\Etudiant',
+    ]);
+
+    return redirect()->route('enseignant.reclamations.index')
+         ->with('success', 'Réclamation envoyée à l\'administrateur !');
+}
+public function envoyerReponse(Request $request, Reclamation $reclamation)
+{
+    $validated = $request->validate([
+        'statut' => 'required|in:traité,rejeté,en_cours',
+        'reponse' => 'required|string|min:10',
+        'notify' => 'sometimes|boolean'
+    ]);
+
+    $reclamation->update([
+        'statut' => $validated['statut'],
+        'reponse' => $validated['reponse'],
+        'date_reponse' => now(),
+        'admin_id' => auth()->id()
+    ]);
+
+    if ($request->notify) {
+        Mail::to($reclamation->expediteur->email)
+            ->send(new ReclamationResponseMail($reclamation));
+    }
+
+    return redirect()->route('admin.reclamations.show', $reclamation)
+        ->with('success', 'Réponse enregistrée et notifiée avec succès !');
+}
 }

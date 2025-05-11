@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -28,7 +29,6 @@
 </head>
 <body> 
 <div class="dashboard-container">
-    <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <div class="brand-flex">
@@ -121,176 +121,129 @@
             </div>
         </header>
 
-        <div class="container py-4">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h3 class="mb-0">Détails de la Réclamation</h3>
-                        <span class="badge bg-{{ $reclamation->statut === 'traité' ? 'success' : ($reclamation->statut === 'rejeté' ? 'danger' : 'warning') }}">
-                            {{ strtoupper($reclamation->statut) }}
-                        </span>
+
+
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5>Détails de la Réclamation #{{ $reclamation->id }}</h5>
+        </div>
+        
+        <div class="card-body">
+            <!-- Statut et Type -->
+            <div class="mb-4">
+                <span class="badge badge-{{ $reclamation->statut == 'en_attente' ? 'warning' : ($reclamation->statut == 'traité' ? 'success' : 'danger') }}">
+                    {{ ucfirst(str_replace('_', ' ', $reclamation->statut)) }}
+                </span>
+                <span class="badge badge-info ml-2">
+                    {{ $reclamation->typeToString() }}
+                </span>
+            </div>
+
+            <!-- Expéditeur et Destinataire -->
+            <div class="row mb-4">
+                <!-- Expéditeur -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h6>Expéditeur</h6>
+                        </div>
+                        
                     </div>
                 </div>
-
-                <div class="card-body">
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <h5 class="text-primary">Informations Générales</h5>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span class="fw-bold">Type:</span>
-                                    <span>
-                                        @switch($reclamation->type)
-                                            @case('prof_vers_etud') Professeur → Étudiant @break
-                                            @case('etud_vers_prof') Étudiant → Professeur @break
-                                            @default Étudiant → Étudiant
-                                        @endswitch
-                                    </span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span class="fw-bold">Date:</span>
-                                    <span>{{ $reclamation->created_at?->format('d/m/Y H:i') ?? 'Date non disponible' }}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span class="fw-bold">Admin assigné:</span>
-                                    <span>{{ $reclamation->admin->name ?? 'Non assigné' }}</span>
-                                </li>
-                            </ul>
+                
+                <!-- Destinataire -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-light">
+                            <h6>Destinataire</h6>
                         </div>
-
-                        <div class="col-md-6">
-                            <h5 class="text-primary">Parties impliquées</h5>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <span class="fw-bold">Expéditeur:</span>
-                                    <div class="mt-2">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-user-circle fa-2x me-3 text-secondary"></i>
-                                            <div>
-                                                <h6 class="mb-0">{{ $reclamation->expediteur->nom ?? 'Expéditeur inconnu' }}</h6>
-                                                <small class="text-muted">
-                                                    @if($reclamation->expediteur)
-                                                        {{ class_basename($reclamation->expediteur_type) }} • 
-                                                        {{ $reclamation->expediteur->email ?? 'Email non disponible' }}
-                                                    @else
-                                                        Compte supprimé
-                                                    @endif
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <span class="fw-bold">Destinataire:</span>
-                                    <div class="mt-2">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fas fa-user-circle fa-2x me-3 text-secondary"></i>
-                                            <div>
-                                                <h6 class="mb-0">{{ $reclamation->destinataire->nom ?? 'N/A' }}</h6>
-                                                @if($reclamation->destinataire)
-                                                <small class="text-muted">
-                                                    {{ class_basename($reclamation->destinataire_type) }} •
-                                                    {{ $reclamation->destinataire->email ?? 'Email non disponible' }}
-                                                </small>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <h5 class="text-primary">Contenu de la réclamation</h5>
-                        <div class="card">
-                            <div class="card-body bg-light">
-                                {!! nl2br(e($reclamation->contenu)) !!}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <a href="{{ route('admin.reclamations.index') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i> Retour à la liste
-                        </a>
-
-                        <div class="btn-group">
-                            @if($reclamation->statut === 'en_attente')
-                                <form action="{{ route('admin.reclamations.traiter', $reclamation) }}" method="POST" class="me-2">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="fas fa-check-circle me-2"></i> Marquer comme traité
-                                    </button>
-                                </form>
-
-                                <form action="{{ route('admin.reclamations.rejeter', $reclamation) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="fas fa-times-circle me-2"></i> Rejeter
-                                    </button>
-                                </form>
+                        <div class="card-body">
+                            @if($reclamation->destinataire)
+                                @include('Admin.partials.user_info', ['user' => $reclamation->destinataire])
+                            @else
+                                <p class="text-muted">Aucun destinataire spécifié</p>
                             @endif
-
-                            <button class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#responseModal">
-                                <i class="fas fa-reply me-2"></i> Répondre
-                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Modal pour répondre -->
-            <!-- Modal pour répondre -->
-<div class="modal fade" id="responseModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{{ route('admin.reclamations.response', ['reclamation' => $reclamation->id]) }}" method="POST">
-                @csrf
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Envoyer une réponse</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Contenu -->
+            <div class="card mb-4">
+                <div class="card-header bg-light">
+                    <h6>Contenu</h6>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label">Message</label>
-                        <textarea name="reponse" class="form-control" rows="5" required></textarea>
+                <div class="card-body">
+                    <div class="p-3 bg-light rounded">
+                        {!! nl2br(e($reclamation->contenu)) !!}
+                    </div>
+                    <small class="text-muted">Créée le {{ $reclamation->created_at->format('d/m/Y H:i') }}</small>
+                </div>
+            </div>
+
+            <!-- Réponse -->
+            @if($reclamation->reponse)
+                <div class="card mb-4 border-success">
+                    <div class="card-header bg-success text-white">
+                        <h6>Réponse</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="p-3 bg-light rounded">
+                            {!! nl2br(e($reclamation->reponse)) !!}
+                        </div>
+                        <small class="text-muted">
+                            Répondu le {{ $reclamation->date_reponse->format('d/m/Y H:i') }}
+                            @if($reclamation->admin)
+                                par {{ $reclamation->admin->name }}
+                            @endif
+                        </small>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary">Envoyer la réponse</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-                            @if($reclamation->reponse)
-<div class="card mt-4 border-success">
-    <div class="card-header bg-success text-white">
-        <h5 class="mb-0">
-            <i class="fas fa-reply me-2"></i> Réponse de l'administration
-            <small class="float-end">{{ $reclamation->date_reponse->format('d/m/Y H:i') }}</small>
-        </h5>
-    </div>
-    <div class="card-body">
-        {!! nl2br(e($reclamation->reponse)) !!}
-    </div>
-    <div class="card-footer text-muted small">
-        Répondu par : {{ $reclamation->admin->name }}
-    </div>
-</div>
-@endif
+            @endif
+
+            <!-- Formulaire de réponse -->
+            @if($reclamation->statut == 'en_attente')
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h6>Traiter la Réclamation</h6>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.reclamations.response.form', $reclamation->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            
+                            <div class="form-group">
+                                <label>Statut</label>
+                                <select name="statut" class="form-control" required>
+                                    <option value="traité">Traité</option>
+                                    <option value="rejeté">Rejeté</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Réponse</label>
+                                <textarea name="reponse" rows="5" class="form-control" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-check"></i> Enregistrer
+                            </button>
                         </form>
                     </div>
                 </div>
-            </div>
+            @endif
+        </div>
+        
+        <div class="card-footer">
+            <a href="{{ route('admin.reclamations.index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour
+            </a>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+</div>
 </body>
 </html>

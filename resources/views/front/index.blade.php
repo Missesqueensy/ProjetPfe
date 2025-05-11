@@ -28,8 +28,8 @@
 
 
 
-                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                                <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
+                                <a href="" class="btn btn-primary py-md-4 px-md-5 me-3 animated slideInLeft">Read More</a>
+                                <a href="" class="btn btn-light py-md-4 px-md-5 animated slideInRight">Join Now</a>
                             </div>
                         </div>
                     </div>
@@ -51,8 +51,8 @@
                                          </blockquote>
 
 
-                                <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                                <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
+                                <a href="" class="btn btn-primary py-md-4 px-md-5 me-3 animated slideInLeft">Read More</a>
+                                <a href="" class="btn btn-light py-md-4 px-md-5 animated slideInRight">Join Now</a>
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                             <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Chat pour approfondir votre compréhension</p>
                         </div>
                     </div>
-                    <a class="btn btn-primary py-3 px-5 mt-2" href="">Lire Plus</a>
+                    <a class="btn btn-primary py-4 px-5 mt-2" href="">Lire Plus</a>
                 </div>
             </div>
         </div>
@@ -162,13 +162,13 @@
                 <div class="col-lg-7 col-md-6">
                     <div class="row g-3">
                         <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
-                            <a class="position-relative d-block overflow-hidden" href="">
+                            <!--<a class="position-relative d-block overflow-hidden" href="">
                                 <img class="img-fluid" src="img/cat-1.jpg" alt="">
                                 <div class="bg-white text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
-                                    <h5 class="m-0">Biologie</h5>
-                                    <small class="text-primary">49 Courses</small>
+                                    -<h5 class="m-0">Biologie</h5>--
+                                    <small class="text-primary">49 Courses</small>--
                                 </div>
-                            </a>
+                            </a>-->
                         </div>
                         <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
                             <a class="position-relative d-block overflow-hidden" href="">
@@ -232,10 +232,10 @@
                                 <small class="fa fa-star text-primary"></small>
                                 <small>(123)</small>
                             </div>
-                            <h5 class="mb-4">Base Algorithmes</h5>
+                            <h5 class="mb-4">Création agent IA</h5>
                         </div>
                         <div class="d-flex border-top">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>Pr.ALIBOUCH</small>
+                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-user-tie text-primary me-2"></i>Pr.ASSIM</small>
                             <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>24.hrs</small>
                             <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>60 étudiants</small>
                         </div>
@@ -322,7 +322,7 @@
                             </div>
                         </div>
                         <div class="text-center p-4">
-                            <h5 class="mb-0">Pr.ALIBOUCH</h5>
+                            <h5 class="mb-0">Pr.ALAMI</h5>
                             <small>Informatique</small>
                         </div>
                     </div>
@@ -340,7 +340,7 @@
                             </div>
                         </div>
                         <div class="text-center p-4">
-                            <h5 class="mb-0">Pr.Amensag</h5>
+                            <h5 class="mb-0">Pr.ATIQI</h5>
                             <small>Mathématique</small>
                         </div>
                     </div>
