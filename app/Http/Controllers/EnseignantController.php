@@ -760,6 +760,17 @@ public function createProfVersEtud()
         'destinataireType' => Etudiant::class
     ]);
 }
+// Dans votre contrôleur
+public function logout2(Request $request)
+{
+    if ($request->hasValidSignature()) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    }
+    abort(403);
+}
 public function logout(Request $request)
 {
     auth('enseignant')->logout();

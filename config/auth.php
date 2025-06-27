@@ -6,7 +6,7 @@ return [
 
     'defaults' => [
         'guard' => 'etudiant',
-        'passwords' => 'etudiant',
+        'passwords' => 'etudiants',
     ],
 
     'guards' => [
@@ -38,7 +38,7 @@ return [
     'providers' => [
         'etudiants' => [
             'driver' => 'eloquent',
-            'model' => Etudiant::class, // Utilisation correcte de l'importation
+            'model' => App\Models\Etudiant::class, // Utilisation correcte de l'importation
         ],
         'admins' => [
     'driver' => 'eloquent',
@@ -58,15 +58,24 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+    'enseignants' => [
+        'provider' => 'enseignants',
+        'table' => 'password_resets',
+        'expire' => 60,
+        'throttle' => 60,
+    ],
+    'admins' => [
+        'provider' => 'admins',
+        'table' => 'password_resets',
+        'expire' => 60,
+        'throttle' => 60,
+    ]
     ],
 
     'password_timeout' => 10800,
 
 
-'admin' => [
-    'driver' => 'session',
-    'provider' => 'admin',
-],
+
 
 ];
 

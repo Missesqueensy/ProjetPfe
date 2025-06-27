@@ -326,7 +326,7 @@
     });
 </script>
 </body>
-</html>--> 
+</html>-->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -384,10 +384,34 @@
             padding: 2rem;
             color: #6c757d;
         }
+         body {
+        overflow-x: hidden; /* Empêche le défilement horizontal */
+    }
+    
+    .dashboard-container {
+        min-width: 100vw; /* Prend toute la largeur de l'écran */
+    }
+    
+    .main-content {
+        margin-left: 300px; /* Ajustez selon la largeur de votre sidebar */
+        width: calc(100% - 250px); /* Largeur totale moins sidebar */
+    }
+    
+    .card.shadow {
+        border-radius: 0.5rem;
+        border: none;
+    }
+    
+    /* Pour les petits écrans */
+    @media (max-width: 990px) {
+        .main-content {
+            margin-left: 0;
+            width: 100%;
+        }
+    }
     </style>
 </head>
 <body> 
-
 <div class="dashboard-container">
     <div class="sidebar">
         <div class="sidebar-brand">
@@ -401,7 +425,7 @@
         </div>
         
         <div class="sidebar-user">
-            <img src="{{ Auth::guard('enseignant')->user()->image ? asset('storage/'.Auth::guard('enseignant')->user()->image) : asset('assets/img/user1.jpeg') }}" 
+            <img src="{{ Auth::guard('enseignant')->user()->image ? asset('assets/img/'.Auth::guard('enseignant')->user()->image) : asset('assets/img/user1.jpeg') }}" 
                  width="50" height="50" alt="Photo de profil" class="rounded-circle" loading="lazy">
             <div>
                 <span>{{ Auth::guard('enseignant')->user()->prenom }} {{ Auth::guard('enseignant')->user()->nom }}</span>
@@ -417,20 +441,20 @@
                         Mon Profil
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="{{ route('enseignant.courses.index') }}">
                         <span class="las la-book"></span>
                         Mes Cours
                     </a>
                 </li>
                 <li>
-                <a href="{{route('enseignant.evaluations.index')}}">
+                    <a href="{{route('enseignant.evaluations.index')}}">
                         <span class="las la-clipboard-list"></span>
                         Évaluations
                     </a>
                 </li>
                 @isset($evaluations)
-                @foreach($evaluations as $eval)
+    @foreach($evaluations as $eval)
         <li>
             <a href="{{ route('enseignant.notes.index', ['evaluation' => $eval->id_evaluation]) }}">
                 <span class="la la-check-circle"></span>
@@ -438,9 +462,10 @@
             </a>
         </li>
     @endforeach
-    @endisset
-                <li class="active">
-                    <a href="{{ route('enseignant.reclamations.index') }}">
+@endisset
+
+                <li>
+                <a href="{{route('enseignant.reclamations.index')}}">
                         <span class="la la-chalkboard-teacher"></span>
                         Réclamations
                     </a>
@@ -482,14 +507,16 @@
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item" href="{{ route('enseignant.dashboard') }}">Mon profil</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="{{ route('enseignant.logout') }}">Déconnexion</a></li>
+                                <li><a class="dropdown-item text-danger" href="{{ route('enseignant.logout.simple') }}">Déconnexion</a></li>
+                                <li>
+   
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-4 px-0">
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">Gestion des Réclamations</h1>
                 <div>
@@ -499,7 +526,6 @@
                 </div>
             </div>
 
-            <!-- Modal de Filtrage (optimisé) -->
             <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -544,7 +570,6 @@
         <a href="{{ route('enseignant.reclamations.create') }}" class="btn btn-sm btn-success me-2">
             <i class="fas fa-plus me-1"></i> Nouvelle Réclamation
         </a>
-            <!-- Liste des Réclamations (optimisée) -->
             <div class="row">
                 <div class="col-12">
                     <div class="card shadow mb-4">

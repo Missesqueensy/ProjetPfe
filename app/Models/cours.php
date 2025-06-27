@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage; // <-- Ajoutez cette ligne
 use App\Models\EmploiDuTemps;
 use App\Models\CoursClasse;
+use App\Models\enseignant;
 class Cours extends Model
 {
     protected $table = 'cours'; // Nom de la table
@@ -20,6 +21,10 @@ class Cours extends Model
         'deleted_at', // si vous utilisez SoftDeletes
         'date_publication' // si ce champ existe
     ];
+    protected $casts = [
+    'date_publication' => 'datetime',
+];
+
     // Relation avec le modèle Enseignant (chaque cours appartient à un enseignant)
     public function enseignant()
     {
@@ -51,5 +56,16 @@ public function scopeForTeacher($query, $teacherId)
 public function classes()
 {
     return $this->belongsToMany(Classe::class, 'cours_classe', 'id_cours', 'id_classe');
+}
+
+public function getIdEnseignantAttribute()
+{
+    return Enseignant::find($this->attributes['id_enseignant']);
+}
+public function etudiants()
+{
+    return $this->belongsToMany(Etudiant::class, 'etudiant_cours', 'id_cours', 'id_etudiant')
+                ->withTimestamps()
+                ->withPivot(['created_at', 'updated_at']);
 }
 }

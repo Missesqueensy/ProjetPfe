@@ -104,4 +104,26 @@ public function notes()
         ? $this->date_evaluation->format('Y-m-d\TH:i')
         : null;
 }
+// Dans app/Models/Evaluation.php
+public function getStatusColorAttribute()
+{
+    return match($this->statut) {
+        'programme' => 'programme',
+        'en_cours' => 'en_cours',
+        'corrige' => 'corrige',
+        'archive' => 'archive',
+        default => 'secondary'
+    };
+}
+
+public function getStatutTextAttribute()
+{
+    return match($this->statut) {
+        'programme' => 'Programmée',
+        'en_cours' => 'En cours',
+        'corrige' => 'Corrigée',
+        'archive' => 'Archivée',
+        default => $this->statut
+    };
+}
 }

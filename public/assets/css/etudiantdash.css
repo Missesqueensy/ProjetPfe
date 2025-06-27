@@ -167,3 +167,658 @@ aside  hr{
     display: inline-block;
     margin-right: .8rem;
 }
+body {
+        background: #f4f6f9;
+    }
+
+    .sidebar {
+        background: #b9c5fd;
+        min-height: 100vh;
+        color: white;
+        padding: 2rem 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar a {
+        color: white;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        text-decoration: none;
+    }
+
+    .sidebar a:hover {
+        background: #3e1e68;
+    }
+
+    /* Fixe le sidebar pour la page dashboard */
+    .fixed-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+    }
+
+    .profile-img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 4px solid white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .menu-profil {
+        position: absolute;
+        top: 130px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        display: none;
+        z-index: 10;
+        padding: 0.5rem;
+        width: 200px;
+    }
+
+    .menu-profil a, .menu-profil button {
+        display: block;
+        padding: 10px;
+        border: none;
+        background: none;
+        text-align: left;
+        width: 100%;
+        cursor: pointer;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .menu-profil a:hover, .menu-profil button:hover {
+        background: #f0f0f0;
+    }
+
+    .modal-photo {
+        display: none;
+        position: fixed;
+        z-index: 20;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.8);
+    }
+
+    .modal-content {
+        margin: 10% auto;
+        display: block;
+        max-width: 500px;
+    }
+
+    .btn-logout {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+    .btn-logout:hover {
+        background-color: #e60000;
+    }
+            :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #c433ff; /* Conservation de votre couleur violette */
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --sidebar-bg: linear-gradient(to bottom, #6a11cb, #2575fc);
+        }
+
+        body {
+            background: #f5f7fa;
+            font-family: 'Poppins', sans-serif;
+            color: #495057;
+        }
+
+        .sidebar {
+            background: var(--sidebar-bg);
+            min-height: 100vh;
+            color: white;
+            padding: 2rem 1rem;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 280px;
+            z-index: 100;
+        }
+
+        .sidebar h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            padding-left: 10px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .sidebar a {
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar a.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-header h2 {
+            color: var(--accent-color); /* Utilisation de votre couleur violette */
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color)); /* Intégration de votre couleur */
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1.25rem;
+            font-weight: 600;
+        }
+
+        .info-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            color: #6c757d;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-logout i {
+            margin-right: 8px;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .user-role-badge {
+            background: var(--accent-color); /* Utilisation de votre couleur violette */
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 1000;
+                width: 280px;
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--accent-color); /* Utilisation de votre couleur violette */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            color: var(--dark-color);
+        }
+
+        .modal-photo {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+            border: 3px solid var(--accent-color); /* Utilisation de votre couleur violette */
+            border-radius: 10px;
+        }
+        
+
+    
+        :root {
+            --primary-color: #6a11cb;
+            --secondary-color: #2575fc;
+            --accent-color: #c433ff; /* Conservation de votre couleur violette */
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --sidebar-bg: linear-gradient(to bottom, #6a11cb, #2575fc);
+        }
+
+        body {
+            background: #f5f7fa;
+            font-family: 'Poppins', sans-serif;
+            color: #495057;
+        }
+
+        .sidebar {
+            background: var(--sidebar-bg);
+            min-height: 100vh;
+            color: white;
+            padding: 2rem 1rem;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 280px;
+            z-index: 100;
+        }
+
+        .sidebar h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            padding-left: 10px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .sidebar a {
+            color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar a.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: 600;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .dashboard-header h2 {
+            color: var(--accent-color); /* Utilisation de votre couleur violette */
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color)); /* Intégration de votre couleur */
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1.25rem;
+            font-weight: 600;
+        }
+
+        .info-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            color: #6c757d;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-logout i {
+            margin-right: 8px;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .user-role-badge {
+            background: var(--accent-color); /* Utilisation de votre couleur violette */
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                position: fixed;
+                z-index: 1000;
+                width: 280px;
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle {
+                display: block !important;
+            }
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            background: var(--accent-color); /* Utilisation de votre couleur violette */
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .profile-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            color: var(--dark-color);
+        }
+
+        .modal-photo {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            margin: 10% auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+            border: 3px solid var(--accent-color); /* Utilisation de votre couleur violette */
+            border-radius: 10px;
+        }
+           
+    
+    .sidebar {
+        background: var(--primary-color);
+        min-height: 100vh;
+        color: white;
+        padding: 2rem 1rem;
+        display: flex;
+        flex-direction: column;
+    }
+    /* Style pour la messagerie */
+.chat-container {
+    scrollbar-width: thin;
+    scrollbar-color: #6a11cb #f1f1f1;
+}
+
+.chat-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+    background-color: #6a11cb;
+    border-radius: 10px;
+}
+
+.message.sent .message-content {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.message.received .message-content {
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.message-form .input-group {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.message-form input {
+    border: none;
+    padding-left: 20px;
+}
+
+.message-form button {
+    border-radius: 0 50px 50px 0;
+}

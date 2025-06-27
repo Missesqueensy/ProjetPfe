@@ -168,7 +168,7 @@ public function index(Evaluation $evaluation)
 
     return redirect()->back()->with('success', 'Les notes ont été enregistrées avec succès.');
 }*/
-public function store(Request $request, $id_evaluation)
+/*11public function store(Request $request, $id_evaluation)
 {
     $evaluation = Evaluation::findOrFail($id_evaluation);
 
@@ -201,10 +201,103 @@ public function store(Request $request, $id_evaluation)
     }
 
     return redirect()->back()->with('success', 'Les notes ont été enregistrées avec succès.');
+}*/
+/*public function store(Request $request, $id_evaluation)
+{
+    $evaluation = Evaluation::findOrFail($id_evaluation);
+
+    // Vérifiez que note_maximale est définie
+    if ($evaluation->note_maximale === null) {
+        return redirect()->back()
+            ->with('error', 'La note maximale n\'est pas définie pour cette évaluation')
+            ->withInput();
+    }
+
+    // Validation
+    $validated = $request->validate([
+        'notes' => 'required|array',
+        'notes.*.valeur' => [
+            'required',
+            'numeric',
+            'min:0',
+            'max:' . (float)$evaluation->note_maximale, // Cast en float pour être sûr
+        ],
+        'notes.*.remarque' => 'nullable|string|max:255',
+    ]);
+
+    // Vérification supplémentaire
+    if (empty($validated['notes'])) {
+        return redirect()->back()
+            ->with('error', 'Aucune note à enregistrer')
+            ->withInput();
+    }
+
+    // Traitement des notes
+    foreach ($validated['notes'] as $id_etudiant => $noteData) {
+        Note::updateOrCreate(
+            [
+                'id_evaluation' => $id_evaluation,
+                'id_etudiant' => $id_etudiant,
+            ],
+            [
+                'valeur' => $noteData['valeur'],
+                'remarque' => $noteData['remarque'] ?? null,
+            ]
+        );
+    }
+
+    return redirect()->back()->with('success', 'Les notes ont été enregistrées avec succès.');
 }
 /**
  * Applique les filtres à la requête
  */
+public function store(Request $request, $id_evaluation)
+{
+    $evaluation = Evaluation::findOrFail($id_evaluation);
+
+    // Validation plus flexible
+    $validated = $request->validate([
+        'notes' => 'required|array',
+        'notes.*.valeur' => [
+            'nullable', // Permet les valeurs nulles
+            'numeric',
+            'min:0',
+            'max:' . $evaluation->bareme_total // Utilisez le même champ que dans le formulaire
+        ],
+        'notes.*.commentaire' => 'nullable|string|max:255', // Corrigé pour matcher le formulaire
+        'statut' => 'required|in:en_attente,corrige,publie'
+    ]);
+
+    // Compteur de notes ajoutées
+    $notesAdded = 0;
+
+    foreach ($validated['notes'] as $id_etudiant => $noteData) {
+        // Ne créer une note que si une valeur est fournie
+        if (!is_null($noteData['valeur'])) {
+            Note::updateOrCreate(
+                [
+                    'id_evaluation' => $id_evaluation,
+                    'id_etudiant' => $id_etudiant
+                ],
+                [
+                    'valeur' => $noteData['valeur'],
+                    'commentaire' => $noteData['commentaire'] ?? null,
+                    'statut' => $validated['statut'],
+                    'date_notation' => now()
+                ]
+            );
+            $notesAdded++;
+        }
+    }
+
+    if ($notesAdded === 0) {
+        return back()->with('warning', 'Aucune note valide à enregistrer');
+    }
+
+    return redirect()
+           ->route('enseignant.evaluations.show', $id_evaluation)
+           ->with('success', $notesAdded . ' notes ont été enregistrées avec succès.');
+}
 protected function applyFilters($query, Request $request)
 {
     if ($request->filled('id_etudiant')) {

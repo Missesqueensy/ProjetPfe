@@ -20,7 +20,7 @@ class CreateCoursTable extends Migration
 
             
             // Métadonnées
-            $table->boolean('est_public')->default(false);
+            $table->boolean('est_public')->default(true);
             $table->dateTime('date_publication')->nullable();
             
             // Clé étrangère améliorée

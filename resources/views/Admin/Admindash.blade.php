@@ -5,13 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
     
-    <!--<link rel="stylesheet" href="Admindash.css">-->
     <link rel="stylesheet" href="{{ asset('assets/css/admindash.css') }}">
 
     <title>Admin Dashboard Panel</title>
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 </head>
 <body> 
+<div class="dashboard-container">
 <div class="dashboard-container">
 
     <div class="sidebar">
@@ -26,12 +26,16 @@
             </div>
         </div>
         <div class="sidebar-user">
-            <img src="{{asset('assets/img/user1.jpeg')}}" height=50 width=50 alt="">
-            <div>
-                <h3>AHLAME LAD</h3>
-                <span>Ladahlame@admin.com</span>
-            </div>
+    @if(Auth::guard('admin')->check())
+        <img src="{{asset('assets/img/carousel-1.jpg')}}" height=50 width=50 alt="">
+        <div>
+            <span>{{ Auth::guard('admin')->user()->prenom }} {{ Auth::guard('admin')->user()->nom }}</span>
+            <small class="text-muted d-block">{{ Auth::guard('admin')->user()->email }}</small>
         </div>
+    @else
+        <script>window.location = "/admin/login";</script>
+    @endif
+</div>
         <div class="sidebar-menu">
              <div class="menu-head">
                 <span>Dashboard</span>
@@ -44,12 +48,11 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{url('/adminAnalyses')}}">
+                <a href="{{url('adminAnalyses')}}">
                     <span class="las la-chart-pie"></span>
                       Réclamations
                     </a>
                 </li>
-               
                 <li>
                     <a href="{{url('/AdminForums')}}">
                     <span class="la la-wpforms"></span>
@@ -81,6 +84,7 @@
                     </a>
                 </li>
                 <li>
+                <li>
     <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
         @csrf
         <button type="submit" style="background: none; border: none; color: inherit; cursor: pointer;">
@@ -89,12 +93,11 @@
         </button>
     </form>
 </li>
-                
              </ul>
             </div>
-        </div>
     </div>
-    <div class="main-content">
+</div>
+<div class="main-content">
         <header>
              <div class="menu-toggle">
                 <label for="">
@@ -107,6 +110,8 @@
                 <span class="las la-sms"></span>
             </div>
         </header>
+
+
         <main>
             <div class="page-header">
                <div>
@@ -133,7 +138,6 @@
                                 <small>Nombre de Visiteurs</small>
                             </div>
                             <h2>17,663</h2>
-                            <!--<small>-2% des visiteurs</small>--> 
                             <small><i class="la la-arrow-down" style="color: red;"></i> -2% des visiteurs</small>
 
                         </div>
@@ -151,7 +155,6 @@
                         </div>
                     </div>
                 </div>
-                    <!--test-->
                 <div class="card-single">
                     <div class="card-flex">
                         <div class="card-info">
@@ -165,7 +168,6 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="cards">-->
                 <div class="card-single">
                     <div class="card-flex">
                         <div class="card-info">
@@ -247,4 +249,4 @@
     </div>
     
 </body>
-</html> 
+</html>

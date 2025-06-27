@@ -7,6 +7,7 @@ use App\Models\Cours;
 use App\Models\enseignant;
 use App\Models\Etudiant;
 use App\Models\Evaluation;
+use App\Models\Classe;
 use App\Models\formulaire;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -35,9 +36,27 @@ class CoursController extends Controller
 
     // CoursController.php
 
-public function create()
+/*public function create()
 { $enseignants = Enseignant::all(); 
     return view('enseignant.create', compact('enseignants'));
+}*/
+public function create()
+{
+    // Récupérer l'enseignant connecté
+    $enseignant = Auth::guard('enseignant')->user();
+    
+    // Récupérer les cours de cet enseignant
+    $cours = $enseignant->cours()->get();
+    
+    // Récupérer toutes les classes (assurez-vous que le modèle Classe existe)
+    $classes = \App\Models\Classe::all(); // Utilisation du chemin complet au cas où
+    
+    $enseignants = Enseignant::all();
+    
+    // Debug: vérifiez ce qui est envoyé à la vue
+    // dd(compact('cours', 'enseignants', 'classes'));
+    
+    return view('enseignant.create', compact('cours', 'enseignants', 'classes'));
 }
 public function show($id_cours)
 {

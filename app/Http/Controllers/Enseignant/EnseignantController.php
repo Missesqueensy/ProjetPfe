@@ -66,4 +66,7 @@ class EnseignantController extends Controller
         $enseignant->delete();
         return redirect()->route('enseignants.index')->with('success', 'Enseignant supprimé avec succès');
     }
+    public function showRegistrationForm(){
+        return view('inscription');
+    }
 }

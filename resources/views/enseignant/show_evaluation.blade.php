@@ -15,6 +15,7 @@
             background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
         }
         .file-preview {
+
             max-height: 200px;
             overflow: hidden;
             border: 1px solid #dee2e6;
@@ -155,7 +156,7 @@
                         <button class="btn btn-primary dropdown-toggle" type="button" id="actionsDropdown" data-bs-toggle="dropdown">
                             <i class="fas fa-cog me-1"></i> Actions
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="actionsDropdown">
                             <li>
                                 <a class="dropdown-item" href="{{ route('enseignant.evaluations.edit', $evaluation->id_evaluation) }}">
                                     <i class="fas fa-edit text-warning me-2"></i> Modifier

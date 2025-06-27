@@ -42,6 +42,13 @@ class AdminAuthenController extends \App\Http\Controllers\Controller
             'email' => 'Les informations de connexion sont incorrectes.',
         ]);
     }
+    public function dashboard()
+    {
+        $admin = Auth::guard('admin')->user();
+
+    
+        return view('Admin.Admindash', compact('admin'));
+    }
     public function courses()
     {
         $courses = Cours::all();  // Récupère tous les cours
@@ -140,5 +147,10 @@ public function envoyerReponse(Request $request, Reclamation $reclamation)
     return redirect()
            ->route('admin.reclamations.show', $reclamation)
            ->with('success', 'Réponse envoyée avec succès');
+}
+// AdminAuthenController.php
+public function showLoginForm()
+{
+    return view('Admin.Adminlog'); // Assurez-vous que cette vue existe
 }
 }

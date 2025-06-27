@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class Admin extends Authenticatable // Étendre Authenticatable
 {
     use HasFactory;
+    protected $guard = 'admin';
 
     // Indiquer explicitement la table associée si nécessaire
     protected $table = 'admin';

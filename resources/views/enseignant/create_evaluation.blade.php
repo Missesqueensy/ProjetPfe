@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/enseignantdash.css') }}">
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         .creation-card {
@@ -93,13 +95,16 @@
                         Évaluations
                     </a>
                 </li>
-                <li>
-                <a href="{{ route('enseignant.notes.index') }}">
-
-                        <span class="la la-check-circle"></span>
-                        Résultats étudiants
-                    </a>
-                </li>
+                 @isset($evaluations)
+    @foreach($evaluations as $eval)
+        <li>
+            <a href="{{ route('enseignant.notes.index', ['evaluation' => $eval->id_evaluation]) }}">
+                <span class="la la-check-circle"></span>
+                Résultats {{ $eval->titre }}
+            </a>
+        </li>
+    @endforeach
+@endisset
                 <li>
                 <a href="{{route('enseignant.reclamations.index')}}">
                         <span class="la la-chalkboard-teacher"></span>
@@ -107,7 +112,7 @@
                     </a>
                 </li>
                 <li>
-                <a href="{{route('Enseignanat.emails')}}">
+                <a href="{{route('Enseignant.emails')}}">
 
                         <span class="las la-envelope"></span>
                         Boîte e-mails

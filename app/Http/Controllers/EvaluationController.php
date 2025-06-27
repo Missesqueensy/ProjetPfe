@@ -74,7 +74,7 @@ public function create()
         'publie' => 'Publié'
     ];
 
-    return view('enseignant.create', [
+    return view('enseignant.create_evaluation', [
         'classes' => $cours->pluck('classes')->flatten()->unique('id_classe'),
         'cours' => $cours,
         'typesEvaluation' => $typesEvaluation,

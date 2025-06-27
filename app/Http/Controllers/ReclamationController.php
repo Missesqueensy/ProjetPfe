@@ -138,7 +138,7 @@ public function enseignant_storeReclam(Request $request)
     return redirect()->route('enseignant.reclamations.index')
          ->with('success', 'Réclamation envoyée à l\'administrateur !');
 }
-public function envoyerReponse(Request $request, Reclamation $reclamation)
+/*public function envoyerReponse(Request $request, Reclamation $reclamation)
 {
     $validated = $request->validate([
         'statut' => 'required|in:traité,rejeté,en_cours',
@@ -160,5 +160,56 @@ public function envoyerReponse(Request $request, Reclamation $reclamation)
 
     return redirect()->route('admin.reclamations.show', $reclamation)
         ->with('success', 'Réponse enregistrée et notifiée avec succès !');
+}*/
+public function envoyerReponse(Request $request, Reclamation $reclamation)
+{
+    // Validation
+    $validated = $request->validate([
+        'statut' => ['required', 'in:traité,rejeté,en_cours'],
+        'reponse' => ['required', 'string', 'min:10'],
+        'notify' => ['sometimes', 'boolean']
+    ]);
+
+    // Vérification des permissions
+    if (!auth()->user()->can('respond-to', $reclamation)) {
+        abort(403, 'Action non autorisée');
+    }
+
+    // Mise à jour de la réclamation
+    $updateData = [
+        'statut' => $validated['statut'],
+        'reponse' => $validated['reponse'],
+        'date_reponse' => now(),
+        'admin_id' => auth()->id()
+    ];
+
+    // Transaction pour garantir l'intégrité des données
+    transaction(function () use ($reclamation, $updateData, $validated) {
+        $reclamation->update($updateData);
+
+        // Notification si demandée
+        if ($validated['notify'] ?? false) {
+            $this->notifyUser($reclamation);
+        }
+    });
+
+    return redirect()->route('admin.reclamations.show', $reclamation)
+        ->with('success', 'Réponse enregistrée' . ($validated['notify'] ? ' et notifiée' : '') . ' avec succès !');
 }
+
+/*protected function notifyUser(Reclamation $reclamation)
+{
+    try {
+        Mail::to($reclamation->expediteur->email)
+            ->queue(new ReclamationResponseMail($reclamation));
+            
+        // Alternative pour les notifications en base de données
+        $reclamation->expediteur->notify(new ReclamationResponseNotification($reclamation));
+    } catch (\Exception $e) {
+        error('Échec de la notification', [
+            'reclamation' => $reclamation->id,
+            'error' => $e->getMessage()
+        ]);
+    }
+}*/
 }

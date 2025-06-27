@@ -8,12 +8,37 @@ class FormulaireController extends Controller
     // Créez un contrôleur avec artisan
 
 // Dans FormulaireController.php
-public function index()
+/*public function index()
 {
     $formulaires = Formulaire::all(); // Peut être filtré par statut ou date si nécessaire
     return view('formulaires.index', compact('formulaires'));
-}
+}*/
+/*public function index()
+{
+    $formulaires = Formulaire::with(['etudiant'])
+        ->withCount('commentaires') // Ajoutez cette ligne
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
 
+    return view('admin.formulaires.index', compact('formulaires'));
+}*/
+public function index()
+{
+    $formulaires = Formulaire::query()
+        ->with(['etudiant:id_etudiant,nom'])
+        ->withCount('commentaires')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+
+    return view('admin.formulaires.index', [
+        'formulaires' => $formulaires,
+        'stats' => [
+            'total' => Formulaire::count(),
+            'questions' => Formulaire::where('type', 'question')->count(),
+            'explications' => Formulaire::where('type', 'explication')->count()
+        ]
+    ]);
+}
 /*public function show($id_formulaire)
 {
     // Récupère le formulaire avec ses relations
@@ -48,7 +73,7 @@ public function show1($id_formulaire)
     $formulaire = Formulaire::with('etudiant')->findOrFail($id_formulaire);
     return view('Admin.formulaireshow', compact('formulaire'));
 }
-public function show($id_formulaire)
+/*public function show($id_formulaire)
 {
     $formulaire = Formulaire::with(['etudiant' => function($query) {
         $query->select('id_etudiant', 'nom'); // Charge uniquement les champs nécessaires
@@ -63,6 +88,45 @@ public function show($id_formulaire)
         'formulaire' => $formulaire,
         'backUrl' => url()->previous() // Utile pour un bouton Retour
     ]);
+}*/
+/*public function show($id_formulaire)
+{
+    // Formulaire actuel avec l'étudiant
+    $formulaire = Formulaire::with(['etudiant' => function($query) {
+        $query->select('id_etudiant', 'nom');
+    }])->findOrFail($id_formulaire);
+
+    // Autres formulaires (excluant celui en cours)
+    $formulaires = Formulaire::with(['etudiant' => function($query) {
+        $query->select('id_etudiant', 'nom');
+    }])
+    ->where('id_formulaire', '!=', $id_formulaire)
+    ->orderBy('created_at', 'desc')
+    ->limit(5)
+    ->get();
+
+    return view('Admin.formulaireshow', compact('formulaire', 'formulaires'));
+}*/
+public function show($id_formulaire)
+{
+    // Charge le formulaire avec l'étudiant et les commentaires
+    $formulaire = Formulaire::with([
+        'etudiant' => function($query) {
+            $query->select('id_etudiant', 'nom');
+        },
+        'commentaires.etudiant' => function($query) {
+            $query->select('id_etudiant', 'nom');
+        }
+    ])->findOrFail($id_formulaire);
+
+    // Autres formulaires
+    $formulaires = Formulaire::with(['etudiant'])
+        ->where('id_formulaire', '!=', $id_formulaire)
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get();
+
+    return view('Admin.formulaireshow', compact('formulaire', 'formulaires'));
 }
 public function approve($id)
 {

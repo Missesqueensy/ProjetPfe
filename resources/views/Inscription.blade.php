@@ -72,7 +72,7 @@
             </div>
         </div>
     </body>
-</html>--> 
+</html>-->
 <!DOCTYPE html>
 <html lang="fr">
     <head>
@@ -116,10 +116,10 @@
                     <button class="tab" onclick="openForm('teacherForm')">Enseignant</button>
                 </div>
 
-                <!-- Formulaire Étudiant -->
                 <div id="studentForm" class="form-container active">
                     <header>S'inscrire comme Étudiant</header>
-                    <form action="{{ url('/inscription/etudiant') }}" method="POST">
+<form action="{{ route('register.etudiant') }}" method="POST">
+
                         @csrf
                         <div class="field input">
                             <label for="student_nom">Nom:</label>
@@ -155,10 +155,10 @@
                     </form>
                 </div>
 
-                <!-- Formulaire Enseignant -->
                 <div id="teacherForm" class="form-container">
                     <header>S'inscrire comme Enseignant</header>
-                    <form action="{{ url('/inscription/enseignant') }}" method="POST">
+<form action="{{ route('enseignant.register') }}" method="POST">
+
                         @csrf
                         <div class="field input">
                             <label for="teacher_nom">Nom:</label>
@@ -212,7 +212,6 @@
     </span>
 </div>
 
-                <!-- Affichage des messages de succès et d'erreur -->
                 @if(session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}

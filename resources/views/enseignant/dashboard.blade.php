@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title style="color:#c433ff;">Profil Enseignant - {{ Auth::guard('enseignant')->user()->prenom }} {{ Auth::guard('enseignant')->user()->nom }}</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/enseignantdash.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <meta name="description" content="Page de profil de l'enseignant">
     <meta property="og:title" content="Profil Enseignant">
     <meta property="og:description" content="Page de gestion du profil pour enseignants">
 </head>
+    
 
 <body>
 
@@ -57,8 +57,7 @@
                         Évaluations
                     </a>
                 </li>
-                
-                @isset($evaluations)
+                 @isset($evaluations)
     @foreach($evaluations as $eval)
         <li>
             <a href="{{ route('enseignant.notes.index', ['evaluation' => $eval->id_evaluation]) }}">
@@ -68,9 +67,7 @@
         </li>
     @endforeach
 @endisset
-    
-
-                <li>
+                     <li>
                     <a href="{{route('enseignant.reclamations.index')}}">
                         <span class="la la-chalkboard-teacher"></span>
                         Réclamations
@@ -96,34 +93,30 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
         <header class="sticky-top bg-white shadow-sm">
-            <div class="container-fluid py-2">
+            <div class="container-fluid py-3">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="menu-toggle">
                         <button class="btn btn-outline-secondary">
                             <span class="las la-bars"></span>
                         </button>
                     </div>
-                    <span class="me-3 d-none d-md-inline">Bonjour, {{ Auth::guard('enseignant')->user()->prenom }}</span> 
+                                <div class="header-content">
+                    <!--<span class="me-1 d-none d-md-inline">Bonjour, {{ Auth::guard('enseignant')->user()->prenom }}</span> -->
+                                    <span class="username-display">Bonjour, {{ Auth::guard('enseignant')->user()->prenom }}</span> 
+                                </div>
                 </div>
             </div>
         </header>
-        <div>
-    
-
-           
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-md-12">
+            <!--<div class="row justify-content-center">-->
+                    <div class="container-fluid px-4 py-3">
                     <div class="card">
                         <div class="card-header bg-primary text-white">
                             <h3>Profil de {{ Auth::guard('enseignant')->user()->prenom }} {{ Auth::guard('enseignant')->user()->nom }}</h3>
                         </div>
 
                         <div class="card-body">
-                            <!-- Informations personnelles -->
                             <div class="row mb-4">
                                 <div class="col-md-4">
                                     <div class="text-center">
@@ -139,18 +132,17 @@
                                 </div>
                             </div>
 
-                            <!-- Statistiques et informations supplémentaires -->
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
                                         <div class="card-body">
                                             <h6>Cours Assignés</h6>
                                             <h4 class="text-primary">{{ Auth::guard('enseignant')->user()->courses->count() }}</h4>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="card">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
                                         <div class="card-body">
                                             <h6>Réclamations envoyées</h6>
                                             <h4 class="text-warning">{{ Auth::guard('enseignant')->user()->reclamationsEnvoyees->count() }}</h4>
@@ -159,7 +151,6 @@
                                 </div>
                             </div>
 
-                            <!-- Modifier le Profil -->
                             <div class="mt-4">
                                 <h5>Modifier Profil</h5>
                                 <form action="{{ route('enseignant.profile.update') }}" method="POST" enctype="multipart/form-data">
